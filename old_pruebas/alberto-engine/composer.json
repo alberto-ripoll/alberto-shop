@@ -1,0 +1,18 @@
+{
+    "name": "alberto/framework",
+    "description": "Un framework de pega",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.3"
+    },
+    "require-dev": {
+        "larapack/dd": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alberto\\Framework\\": "src/"
+        }
+    }
+}
