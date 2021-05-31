@@ -1,1 +1,0 @@
-Aquí irán todos los ficheros de acceso público (Imagenes, estilos, javascript)

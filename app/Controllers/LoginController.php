@@ -61,12 +61,6 @@ class LoginController extends Controller{
         }
         $this->redirect= '/';
         $this->session->logged = true;
-        // return $this->responde('Tienda',[]);    
-        // return $this->responde('Login',[
-        //     "username"=>$username,
-        //     "message"=>"Contraseña incorrecta"
-        //     ]);
-        // $this       
     }
     
 }

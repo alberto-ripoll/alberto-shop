@@ -9,6 +9,7 @@ use AlbertoCore\Modulos\Middleware;
 class RouterHandler extends Middleware{
     public $req;
     public $res;
+    public $middleware;
     public $controller;
     public function __construct(Request $req, Response $res){
         $this->req = $req;

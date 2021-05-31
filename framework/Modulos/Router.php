@@ -16,8 +16,10 @@ class Router{
         'GET'=>[],
         'POST'=>[],
         'PUT'=>[],
-        'DELETE'=>[]
+        'DELETE'=>[],
     ];
+    public static $groups;
+    public static $matchedGroup =false;
     /**
      * Se encarga de añadir las rutas recibidas al array asociativo de rutas, con el formato correspondiente
      *
@@ -27,6 +29,11 @@ class Router{
      * @return void
      */
     public static function addRutas(string $method, string $ruta, string $controller,array $middlewares){
+        if (self::$matchedGroup){
+            $group = self::$matchedGroup;
+            $ruta = $group['route'].$ruta;
+            $middleware = array_merge($group['middleware'],$middlewares);
+        }
         self::$rutas[$method][] = ['RUTA'=>$ruta,'CONTROLLER'=>$controller,'MIDDLEWARES'=>$middlewares];
     }
 
@@ -41,6 +48,22 @@ class Router{
     }
     public static function delete(string $ruta, string $controller,array $middlewares=[]){
         self::addRutas('DELETE',$ruta,$controller,$middlewares);
+    }
+    public function group(string $route,callable $callback,array $middlewares=[]){
+        self::$groups[] =[
+            'route'=>$route,
+            'callback'=>$callback,
+            'middleware'=>$middlewares
+        ];
+    }
+
+    public static function resetRoutes(){
+        self::$rutas = [
+            'GET'=>[],
+            'POST'=>[],
+            'PUT'=>[],
+            'DELETE'=>[]
+        ]; 
     }
      /**
      * Comprueba la existencia de la ruta del objeto Request recibido en el array asociativo de rutas que cargamos al inicio de la ejecución. En caso de
@@ -87,9 +110,27 @@ class Router{
                 }
                 //Devuelvo el controlador sin parametros ni metodo a ejecutar
                 return [Contenedor::build($claseController),'',[],$rutasMetodoHTTP[$i]['MIDDLEWARES']];;
-            };
+            }
         }
 
+        $groups = self::$groups;
+        foreach ($groups as $group){
+            $rule = $group['route']; 
+            $rule = str_replace('/', '\/', $rule);
+            if (preg_match('/'.$rule.'/', $path, $matches)){
+                if (is_callable($group['callback'])){
+                    //borro la conf actual de rutas
+                    //pzra evitar el matcheo con rutas fuera del grupo
+                    self::resetRoutes();  
+                    self::$matchedGroup = $group;
+                    $group['callback']();   
+                    self::$groups = []; 
+                    
+                    $result = self::route($req);
+                    if ($result) return  $result;   
+            }
+         }           
+    }
         return false;
     }
 
