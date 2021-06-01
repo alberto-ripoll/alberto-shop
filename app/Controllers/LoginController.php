@@ -37,7 +37,7 @@ class LoginController extends Controller{
         $username = $this->request->username;
         $password = $this->request->password;
 
-        $cumpleContrato = ($this->validarRequestCommand)($this->request, LoginContract::$fields);
+        $cumpleContrato = ($this->validarRequestCommand)($this->request, LoginContract::$rules);
         if (!$cumpleContrato){
             return $this->responde('Login',[
                 "username"=>$username,

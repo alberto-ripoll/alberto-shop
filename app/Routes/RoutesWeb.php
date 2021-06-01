@@ -15,6 +15,7 @@ use App\Controllers\Productos\VerTodosProductosController;
 
 use App\Controllers\PrincipalController;
 use App\Controllers\Productos\VerProductoController;
+use App\Controllers\SigninController;
 // use App\Middleware\FormOnlyNumbersMiddleware;
 use App\Middleware\HttpMethodMiddleware;
 
@@ -26,6 +27,9 @@ class RoutesWeb{
     public static function defineRoutes(){
         Router::get('/',PrincipalController::class); 
         Router::get('/pay',PayController::class); 
+
+        Router::get('/signin',SigninController::class); 
+        Router::post('/signin','App\Controllers\SigninController@signin'); 
 
         Router::get('/login',LoginController::class); 
         Router::post('/login','App\Controllers\LoginController@login'); 

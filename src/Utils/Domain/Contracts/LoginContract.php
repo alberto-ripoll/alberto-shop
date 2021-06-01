@@ -2,9 +2,8 @@
 namespace Src\Utils\Domain\Contracts;
 
 class LoginContract{
-    //;
-    public static $fields = [
-        "username"=>true,
-        "password"=>true
+    public static $rules = [
+        "username"=>['required'],
+        "password"=>['required']
     ];
 }

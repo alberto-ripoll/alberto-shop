@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     return res.data.producto;
   }
 
-  function init() {
+  function loadBotones(){
     btnsAddToCart = document.querySelectorAll(".addToCart");
     btnsAddToCart.forEach((btn) => {
       btn.addEventListener("click", (event) => {
@@ -26,13 +26,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
     btnNuevo.addEventListener("click", () => {
       ordenarPor("nuevos");
     });
+    console.log('BOTONES CARGADOS');
+
+  }
+  function init() {
+    loadBotones();
 
     if (localStorage.getItem("productos") === null) {
       // let productosLocalStorage = [];
       localStorage.setItem("productos", JSON.stringify(""));
     }
-    console.log("INIT");
     updateHTML();
+    console.log('TODO LISTO')
   }
 
   async function addtoCart(id) {
@@ -61,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     if (filtro == "nuevos") {
       productos.sort(function (a, b) {
           return new Date(b.created_at) - new Date(a.created_at);
-
       });
     }
     if (filtro == "valorados") {
@@ -110,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
     document.querySelector("#viendo").innerHTML = 'Ordenado por '+filtro;
     document.querySelector("#shop-content").innerHTML = shopContent;
+    loadBotones();
   }
 
   function updateHTML() {

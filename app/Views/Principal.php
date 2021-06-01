@@ -72,6 +72,8 @@
                       <?php if ($isLogged):?>
                         <a class="btn btn-outline-dark" href="/logout">Cerrar sesion</a>
                         <?php else:?>
+                            <a class="btn btn-outline-dark" href="/signin">Crear cuenta</a>
+
                         <a class="btn btn-outline-dark" href="/login">Iniciar sesion</a>
                         <?php endif?></li>
                 </div>
@@ -87,6 +89,8 @@
                     <?php else:?>
                       <h1 class="display-4 fw-bolder">Bienvenido a la tienda</h1>
                         <?php endif?>
+                        <span id="viendo"></span>
+
                 </div>
             </div>
         </header>
@@ -99,7 +103,6 @@
                                 <li><button id="valorados" class="dropdown-item">Mejores valorados</button></li>
                                 <li><button id="nuevos" class="dropdown-item">Más nuevos</button></li>
                             </ul>
-                            <span id="viendo"></span>
         <hr>
                 <div id="shop-content" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <?php foreach($productos as $producto): ?>
