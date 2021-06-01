@@ -57,53 +57,61 @@ document.addEventListener("DOMContentLoaded", function (event) {
     let shopContent = document.querySelector("#shop-content");
     let res = await axios.get(`http://desarrollo.zataca.com/api/productos`);
     const productos = res.data.productos;
+
     if (filtro == "nuevos") {
-      console.log(productos);
-      // shopContent.innerHTML = ``
+      productos.sort(function (a, b) {
+          return new Date(b.created_at) - new Date(a.created_at);
+
+      });
     }
     if (filtro == "valorados") {
-      // shopContent.innerHTML = ``
+      productos.sort(function (a, b) {
+        return b.puntuacion - a.puntuacion;
+      });
     }
+    
     if (filtro == "baratos") {
       productos.sort(function (a, b) {
         return a.precio - b.precio;
       });
-      shopContent.innerHTML = ``;
-      productos.forEach((producto) => {
-        shopContent += `
-        <div class="col mb-5">
-        <div class="card h-100">
-            <!-- Product image-->
-            <img class="card-img-top" src="${producto.image}" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-                <div class="text-center">
-                    <!-- Product name-->
-                    <h5 class="fw-bolder">${producto.nombre}</h5>
-                    <!-- Product reviews-->
-                     <div class="d-flex justify-content-center small text-warning mb-2">
-                     `;
-                  for (let index = 0; index < producto.puntuacion; index++) {
-                    shopContent += `<div class="bi-star-fill"></div>`
-                  }
-            shopContent += `
-                    </div>
-                    <!-- Product price-->
-                    ${producto.precio}
-                </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCart" data-id="${producto.id}">Añadir al carrito</button></div>
-            </div>
-        </div>
-      </div>`;
-      });
-      console.log(productos);
     }
+
+    shopContent = ``;
+
+    productos.forEach((producto) => {
+      shopContent += `
+      <div class="col mb-5">
+      <div class="card h-100">
+          <!-- Product image-->
+          <img class="card-img-top" src="${producto.image}" alt="..." />
+          <!-- Product details-->
+          <div class="card-body p-4">
+              <div class="text-center">
+                  <!-- Product name-->
+                  <h5 class="fw-bolder">${producto.nombre}</h5>
+                  <!-- Product reviews-->
+                   <div class="d-flex justify-content-center small text-warning mb-2">
+                   `;
+                for (let index = 0; index < producto.puntuacion; index++) {
+                  shopContent += `<div class="bi-star-fill"></div>`
+                }
+          shopContent += `
+                  </div>
+                  <!-- Product price-->
+                  $${producto.precio}
+              </div>
+          </div>
+          <!-- Product actions-->
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+              <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCart" data-id="${producto.id}">Añadir al carrito</button></div>
+          </div>
+      </div>
+    </div>`;
+    });
     document.querySelector("#viendo").innerHTML = 'Ordenado por '+filtro;
     document.querySelector("#shop-content").innerHTML = shopContent;
   }
+
   function updateHTML() {
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     let tbody = document.getElementById("carrito");
