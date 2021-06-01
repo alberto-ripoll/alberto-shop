@@ -15,9 +15,28 @@
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
     <style>
+    .card-img-top{
+        height:19rem;
+        width: 16rem;
+    }
         td,th{
             padding: 1rem;
             text-align: center;
+        }
+        #cnt-finalizarCompra{
+            visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-left: 1rem;
+        }
+        .btn-outline-green{
+            border-color:green;  
+            color:green;   
+        }
+        .btn-outline-green:hover{
+            background-color: green;
+            color:white;
         }
     </style>
     <body>
@@ -29,21 +48,24 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item dropdown">
-                            <a class="btn btn-outline-dark dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi-cart-fill me-1"></i>Carrito<span class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>
-                            <table style="left:-100px;position:absolute;width:30rem;" class="dropdown-menu"  aria-labelledby="navbarDropdown">
+                            <a class="btn btn-outline-dark dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi-cart-fill me-1"></i>Carrito<span id="cantidadCarrito" class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>
+                            <table style="left:-100px;position:absolute;width:50rem;" class="dropdown-menu"  aria-labelledby="navbarDropdown">
                             <thead>
                                 <tr>
                                     <th>PRODUCTO</th>    
                                     <th>IMAGEN</th> 
-                                    <th>CANTIDAD</th>    
-                                    <th>PRECIO</th>    
+                                    <th colspan="3">CANTIDAD</th>    
+                                    <th>PRECIO</th>   
                                 </tr>
                             </thead>
                             <tbody id="carrito">
                             </tbody>
+
                             </table>
                         </li>
-
+                        <div id="cnt-finalizarCompra">
+                                    <a href="/pay" class="btn btn-outline-green"><i class="bi bi-currency-bitcoin"></i>Finalizar compra</a>
+                                </div>
                     </ul>
 
 
@@ -71,6 +93,13 @@
         <!-- Section-->
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ordenar por</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><button id="baratos" class="dropdown-item">Más baratos</button></li>
+                                <li><button id="valorados" class="dropdown-item">Mejores valorados</button></li>
+                                <li><button id="nuevos" class="dropdown-item">Más nuevos</button></li>
+                            </ul>
+        <hr>
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <?php foreach($productos as $producto): ?>
 

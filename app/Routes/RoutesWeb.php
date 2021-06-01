@@ -10,6 +10,7 @@ namespace App\Routes;
 use AlbertoCore\Modulos\Router;
 use App\Controllers\LoginController;
 use App\Controllers\LogoutController;
+use App\Controllers\PayController;
 use App\Controllers\Productos\VerTodosProductosController;
 
 use App\Controllers\PrincipalController;
@@ -24,6 +25,7 @@ class RoutesWeb{
      */
     public static function defineRoutes(){
         Router::get('/',PrincipalController::class); 
+        Router::get('/pay',PayController::class); 
 
         Router::get('/login',LoginController::class); 
         Router::post('/login','App\Controllers\LoginController@login'); 
