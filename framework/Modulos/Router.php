@@ -36,7 +36,19 @@ class Router{
         }
         self::$rutas[$method][] = ['RUTA'=>$ruta,'CONTROLLER'=>$controller,'MIDDLEWARES'=>$middlewares];
     }
-
+	public static function getRouteParams($route){
+		$params = [];
+		$result = preg_match('/:([a-z]+)/', $route , $params);
+		if ($result){
+			$fields = array_splice($params,1);
+			$fileds = array_flip($fields);
+			$fields = array_fill_keys($fields, '');
+			return $fields;
+		}
+			 
+		
+		return false;
+	}
     public static function get(string $ruta, string $controller,array $middlewares=[]){
         self::addRutas('GET',$ruta,$controller,$middlewares);
     }

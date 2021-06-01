@@ -32,14 +32,14 @@ class Response
         }
         if ($this->redirect){
         header('location: '.$this->redirect);
-
         }
-        if ($this->view){
+        if ($this->viewname!=''){
+            $this->viewname = alRUTA.'app/Views/'.$this->viewname.'.php';          
             ($this->view)($this->viewname,$this->data);
         }else{
             header('Content-Type: application/json');
             echo json_encode($this->data);
-            // return $this->data;
+            return $this->data;
         }
         session_write_close();
         if (function_exists('fastcgi_finish_request'))

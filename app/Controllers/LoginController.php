@@ -61,6 +61,8 @@ class LoginController extends Controller{
         }
         $this->redirect= '/';
         $this->session->logged = true;
+        $this->session->usuario = $username;
+
     }
     
 }

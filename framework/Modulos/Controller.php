@@ -16,8 +16,8 @@ class Controller{
      * @param array $params
      * @return void
      */
-    public function responde(string $vistaname, array $params = []){
+    public function responde($vistaname, array $params = []){
         $this->data = array_merge($this->data, $params);
-        $this->viewname = alRUTA.'app/Views/'.$vistaname.'.php';          
+        $this->viewname = $vistaname;          
     }
 }

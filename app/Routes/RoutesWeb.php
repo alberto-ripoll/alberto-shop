@@ -13,7 +13,7 @@ use App\Controllers\LogoutController;
 use App\Controllers\Productos\VerTodosProductosController;
 
 use App\Controllers\PrincipalController;
-
+use App\Controllers\Productos\VerProductoController;
 // use App\Middleware\FormOnlyNumbersMiddleware;
 use App\Middleware\HttpMethodMiddleware;
 
@@ -31,6 +31,8 @@ class RoutesWeb{
 
         Router::group('/api',function () {
             Router::get('/productos',VerTodosProductosController::class); 
+            Router::get('/producto',VerProductoController::class); 
+
             Router::get('/test',PrincipalController::class); 
         },[]);
 
