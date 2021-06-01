@@ -9,7 +9,7 @@ class ComprobarUsuarioExisteCommand{
         $this->queryBuilder = $queryBuilder;
     }
     public function __invoke(string $usuario){
-        return $this->queryBuilder->getRow("SELECT * FROM framework WHERE username = :username",['username'=>$usuario]);
+        return $this->queryBuilder->getRow("SELECT * FROM usuarios WHERE username = :username",['username'=>$usuario]);
     }
 
 }

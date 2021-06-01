@@ -99,8 +99,9 @@
                                 <li><button id="valorados" class="dropdown-item">Mejores valorados</button></li>
                                 <li><button id="nuevos" class="dropdown-item">Más nuevos</button></li>
                             </ul>
+                            <span id="viendo"></span>
         <hr>
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <div id="shop-content" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <?php foreach($productos as $producto): ?>
 
                     <div class="col mb-5">
