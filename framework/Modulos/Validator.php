@@ -5,11 +5,10 @@ class Validator{
     public $response = [
         'valid'=>true,
     ];
-    public function __invoke($rule,$key,$input){
-        call_user_func_array([$this,$rule],[$key,$input]);
+    public function __invoke($rule,$campo,$input){
+        call_user_func_array([$this,$rule],[$campo,$input]);
         return $this->response;
     }
-
 
     public function isRequired($campo,$input){
         if (!empty($input[$campo])){

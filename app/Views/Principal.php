@@ -40,6 +40,14 @@
             align-items: center;
             padding-left: 1rem;
         }
+        .btn-outline-blue{
+            border-color: #1167b1;  
+            color:#1167b1;   
+        }
+        .btn-outline-blue:hover{
+            background-color: #1167b1;
+            color:white;
+        }
         .btn-outline-green{
             border-color:green;  
             color:green;   
@@ -139,6 +147,8 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-blue mt-auto addToCart" href="/producto?=<?=$producto["id"]?>">Más información</a></div>
+                                <hr>
                                 <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCart" data-id="<?=$producto["id"]?>">Añadir al carrito</button></div>
                             </div>
                         </div>

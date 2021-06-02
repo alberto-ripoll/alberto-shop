@@ -9,6 +9,7 @@ class RegistrarUsuarioCommand{
         $this->queryBuilder = $queryBuilder;
     }
     public function __invoke(array $data){
+        
         return $this->queryBuilder->getRow("INSERT INTO usuarios (nombre,ciudad,email,username,password) VALUES (:nombre,:ciudad,:email,:username,:password)",
         [
             'username'=>$data['username'],

@@ -6,6 +6,7 @@ use AlbertoCore\Modulos\Response;
 use AlbertoCore\Modulos\Request;
 use AlbertoCore\Modulos\Session;
 use Src\Utils\Application\RegistrarUsuarioCommand;
+use Src\Utils\Application\EncriptarPasswordCommand;
 
 use Src\Utils\Application\ComprobarUsuarioExisteCommand;
 use Src\Utils\Application\ValidarRequestCommand;
@@ -16,14 +17,16 @@ class SigninController extends Controller{
     public $validarRequestCommand;
     public $registrarUsuarioCommand;
     public $session;
+    public $encriptarPasswordCommand;
 
-    public function __construct(Session $session, Request $request, Response $response, RegistrarUsuarioCommand $registrarUsuarioCommand, ValidarRequestCommand $validarRequestCommand, ComprobarUsuarioExisteCommand $comprobarUsuarioExisteCommand){
+    public function __construct(EncriptarPasswordCommand $encriptarPasswordCommand, Session $session, Request $request, Response $response, RegistrarUsuarioCommand $registrarUsuarioCommand, ValidarRequestCommand $validarRequestCommand, ComprobarUsuarioExisteCommand $comprobarUsuarioExisteCommand){
         $this->session = $session;
         $this->response = $response;
         $this->request = $request;
         $this->comprobarUsuarioExisteCommand = $comprobarUsuarioExisteCommand;
         $this->validarRequestCommand = $validarRequestCommand;
         $this->registrarUsuarioCommand = $registrarUsuarioCommand;
+        $this->encriptarPasswordCommand = $encriptarPasswordCommand;
     }
 
         
@@ -92,17 +95,25 @@ class SigninController extends Controller{
         }
         $existe = ($this->comprobarUsuarioExisteCommand)($username);
         if ($existe){
+            $validator['username'] = 'Este usuario ya existe';
             return $this->responde('Signin',[
+                "password"=>$password,
+                "num1"=>$num1,
+                "num2"=>$num2,
+                "email" => $email,
+                "ciudad" => $ciudad,
+                "nombre" => $nombre,
                 "username"=>$username,
-                "message"=>"Este usuario ya existe"
+                "validator"=>$validator
                 ]);
         }
+        $hashedPassword = ($this->encriptarPasswordCommand)($password);
         $data = [
             'username' =>$username,
             'nombre' =>$nombre,
             'email' =>$email,
             'ciudad' =>$ciudad,
-            'password' =>$password,
+            'password' =>$hashedPassword,
             'username' =>$username,
         ];
 

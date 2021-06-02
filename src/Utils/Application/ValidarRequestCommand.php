@@ -12,9 +12,9 @@ class ValidarRequestCommand{
     }
 
     public function __invoke($input, array $contrato){
-        foreach ($contrato as $key =>$value) {
+        foreach ($contrato as $campo =>$value) {
             foreach ($value as $rule) { 
-                $this->validation = ($this->validator)($rule,$key,$input);
+                $this->validation = ($this->validator)($rule,$campo,$input);
             }
         }
         return $this->validation;
