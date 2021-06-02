@@ -28,6 +28,8 @@ class RoutesWeb{
         Router::get('/',PrincipalController::class); 
         Router::get('/pay',PayController::class); 
 
+        Router::get('/productos/:id',LoginController::class); 
+
         Router::get('/signin',SigninController::class); 
         Router::post('/signin','App\Controllers\SigninController@signin'); 
 
