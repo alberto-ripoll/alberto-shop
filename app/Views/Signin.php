@@ -55,8 +55,6 @@
                 if (isset($validator['resultado'])): ?>
                     <span style="color:red;"><?=$validator['resultado']?></span>
                 <?php
-            var_dump($validator);    
-                
                 endif?>  
             </div>
             <div class="flex justify-center p-4">

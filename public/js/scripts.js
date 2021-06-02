@@ -43,15 +43,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
   async function addtoCart(id) {
     newProducto = await getProducto(id);
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
-    let existe = productosLocalStorage.findIndex(
-      (producto) => producto.id === newProducto.id
+    let indice = productosLocalStorage.findIndex(
+      (producto) => producto.id == newProducto.id
     );
-    if (existe == -1) {
+    if (indice == -1) {
       newProducto.cantidad = 1;
       productosLocalStorage.push(newProducto);
     } else {
-      newProducto.cantidad = productosLocalStorage[existe].cantidad + 1;
-      productosLocalStorage[existe] = newProducto;
+      newProducto.cantidad = productosLocalStorage[indice].cantidad + 1;
+      productosLocalStorage[indice] = newProducto;
     }
 
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
@@ -130,11 +130,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
       <tr>
         <td>${producto.nombre}</td>
         <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
-        <td><button class="btn reducir" data-id=${producto.id}><i class="fas fa-arrow-down"></i></button></td> 
+        <td><button class="reducir btn" data-id=${producto.id}><i class="fas fa-arrow-down"></i></button></td> 
         <td>${producto.cantidad}</td> 
-        <td><button class="btn aumentar" data-id=${producto.id}><i class="fas fa-arrow-up"></i></button></td> 
+        <td><button class="aumentar btn" data-id=${producto.id}><i class="fas fa-arrow-up"></i></button></td> 
         <td>${producto.precio}</td> 
-        <td><button class="btn eliminar" data-id=${producto.id}><i class="fas fa-trash"></i></button></td> 
+        <td><button class="eliminar btn" data-id=${producto.id}><i class="fas fa-trash"></i></button></td> 
         </tr>
       `;
       cantidad += producto.cantidad;
@@ -172,9 +172,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
   function aumentarCantidad(id) {
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     let indice = productosLocalStorage.findIndex(
-      (producto) => producto.id === id
+      (producto) => producto.id == id
     );
-    productosLocalStorage[indice].cantidad++;
+    productosLocalStorage[indice].cantidad = productosLocalStorage[indice].cantidad + 1;
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
     updateHTML();
@@ -182,9 +182,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
   function reducirCantidad(id) {
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     let indice = productosLocalStorage.findIndex(
-      (producto) => producto.id === id
+      (producto) => producto.id == id
     );
-    productosLocalStorage[indice].cantidad--;
+    productosLocalStorage[indice].cantidad = productosLocalStorage[indice].cantidad - 1;
     if (productosLocalStorage[indice].cantidad == 0) {
       sacarDelCarrito(id);
     }
