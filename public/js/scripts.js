@@ -67,17 +67,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
       productos.sort(function (a, b) {
           return new Date(b.created_at) - new Date(a.created_at);
       });
+      document.querySelector("#viendo").innerHTML = 'Viendo los más nuevos';
+
     }
     if (filtro == "valorados") {
       productos.sort(function (a, b) {
         return b.puntuacion - a.puntuacion;
       });
+      document.querySelector("#viendo").innerHTML = 'Viendo los mejor valorados';
+
     }
     
     if (filtro == "baratos") {
       productos.sort(function (a, b) {
         return a.precio - b.precio;
       });
+      document.querySelector("#viendo").innerHTML = 'Viendo los más económicos';
     }
 
     shopContent = ``;
@@ -112,28 +117,30 @@ document.addEventListener("DOMContentLoaded", function (event) {
       </div>
     </div>`;
     });
-    document.querySelector("#viendo").innerHTML = 'Ordenado por '+filtro;
     document.querySelector("#shop-content").innerHTML = shopContent;
     loadBotones();
   }
 
   function updateHTML() {
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
-    let tbody = document.getElementById("carrito");
-    tbody.innerHTML = ``;
+    let carrito = ``;
     let cantidad = 0;
     productosLocalStorage.forEach((producto) => {
-      tbody.innerHTML += `
+      carrito += `
+      <tr>
         <td>${producto.nombre}</td>
         <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
-        <td><button class="reducir" data-id=${producto.id}>Reducir</button></td> 
+        <td><button class="btn reducir" data-id=${producto.id}><i class="fas fa-arrow-down"></i></button></td> 
         <td>${producto.cantidad}</td> 
-        <td><button class="aumentar" data-id=${producto.id}>Aumentar</button></td> 
+        <td><button class="btn aumentar" data-id=${producto.id}><i class="fas fa-arrow-up"></i></button></td> 
         <td>${producto.precio}</td> 
-        <td><button class="eliminar" data-id=${producto.id}>Eliminar</button></td> 
+        <td><button class="btn eliminar" data-id=${producto.id}><i class="fas fa-trash"></i></button></td> 
+        </tr>
       `;
       cantidad += producto.cantidad;
     });
+    document.querySelector("#carrito").innerHTML = carrito;
+
     btnsAumentar = document.querySelectorAll(`.aumentar`);
     btnsAumentar.forEach((btn) => {
       btn.addEventListener("click", (event) => {
@@ -163,8 +170,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
   }
 
   function aumentarCantidad(id) {
-    console.log("Cantidad", id);
-
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     let indice = productosLocalStorage.findIndex(
       (producto) => producto.id === id
@@ -175,14 +180,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     updateHTML();
   }
   function reducirCantidad(id) {
-    let producto_id = id;
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     let indice = productosLocalStorage.findIndex(
       (producto) => producto.id === id
     );
     productosLocalStorage[indice].cantidad--;
     if (productosLocalStorage[indice].cantidad == 0) {
-      sacarDelCarrito(producto_id);
+      sacarDelCarrito(id);
     }
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 

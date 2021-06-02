@@ -13,8 +13,18 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <style>
+    .eliminar{
+        color: red;
+    }
+    .aumentar{
+        color: green;
+    }
+    .reducir{
+        color:grey;
+    }
     .card-img-top{
         height:19rem;
         width: 16rem;
@@ -89,7 +99,7 @@
                     <?php else:?>
                       <h1 class="display-4 fw-bolder">Bienvenido a la tienda</h1>
                         <?php endif?>
-                        <span id="viendo"></span>
+                        <h3 style="display:block;height:1rem;" id="viendo"></h3>
 
                 </div>
             </div>

@@ -34,26 +34,49 @@ class SigninController extends Controller{
         $this->responde('Signin',[
             "num1"=>$num1,
             "num2"=>$num2,
+            "password"=>'',
             "email" => '',
             "ciudad" => '',
             "nombre" => '',
             "username"=>"",
-            "message"=>"",
-            "password"=>""
-
+            "validator"=>[],
             ]);
     }
     public function signin(){
-        $nombre = $this->request->nombre;
+        $resultado = $this->request->resultado;
         $num1 = $this->request->num1;
         $num2 = $this->request->num2;
+        $nombre = $this->request->nombre;
         $email = $this->request->email;
         $ciudad = $this->request->ciudad;
-        $resultado = $this->request->resultado;
         $username = $this->request->username;
         $password = $this->request->password;
-        $cumpleContrato = ($this->validarRequestCommand)($this->request, SigninContract::$rules);
-        if (!$cumpleContrato){
+        if ($num1-$num2!=$resultado){
+            $num1 = random_int(10,20);
+            $num2 = random_int(0,10);
+            return $this->responde('Signin',[
+                "num1"=>$num1,
+                "num2"=>$num2,
+                "password"=>$password,
+                "email" => $email,
+                "ciudad" => $ciudad,
+                "nombre" => $nombre,
+                "username"=>$username,
+                "validator"=>['resultado'=>'No ha pasado la verificacion humana, compruebe la operacion'],
+                ]);
+        }
+        $input = [
+            'nombre'=>$nombre,
+            'num1'=>$num1,
+            'num2'=>$num2,
+            'email'=>$email,
+            'ciudad'=>$ciudad,
+            'resultado'=>$resultado,
+            'username'=>$username,
+            'password'=>$password,
+        ];
+        $validator = ($this->validarRequestCommand)($input, SigninContract::$rules);
+        if (!$validator['valid']){
             $num1 = random_int(10,20);
             $num2 = random_int(0,10);
             return $this->responde('Signin',[
@@ -64,7 +87,7 @@ class SigninController extends Controller{
                 "ciudad" => $ciudad,
                 "nombre" => $nombre,
                 "username"=>$username,
-                "message"=>"Rellene los campos obligatorios"
+                'validator'=>$validator,
                 ]);   
         }
         $existe = ($this->comprobarUsuarioExisteCommand)($username);

@@ -36,9 +36,12 @@ class LoginController extends Controller{
     public function login(){
         $username = $this->request->username;
         $password = $this->request->password;
-
-        $cumpleContrato = ($this->validarRequestCommand)($this->request, LoginContract::$rules);
-        if (!$cumpleContrato){
+        $input=[
+            'username'=>$username,
+            'password'=>$password
+        ];
+        $validator = ($this->validarRequestCommand)($input, LoginContract::$rules);
+        if (!$validator['valid']){
             return $this->responde('Login',[
                 "username"=>$username,
                 "message"=>"No puede ser vacio"
