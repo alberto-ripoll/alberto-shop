@@ -17,12 +17,7 @@ class PrincipalController extends Controller{
         $this->verTodosProductosCommand = $verTodosProductosCommand;
     }
     public function __invoke(){
-        $isLogged = $this->session->logged;
-        $allProducts = ($this->verTodosProductosCommand)();
-
         $this->responde('Principal',[
-            "isLogged" => $isLogged  ,
-            "productos"=>$allProducts
         ]);
     }
 }

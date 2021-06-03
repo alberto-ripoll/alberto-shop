@@ -5,7 +5,53 @@ document.addEventListener("DOMContentLoaded", function (event) {
     );
     return res.data.producto;
   }
-
+  async function getProductos() {
+    const res = await axios.get(
+      `http://desarrollo.zataca.com/api/productos`
+    );
+    return res.data.productos;
+  }
+async function loadProducts(){
+  let productos = await getProductos();
+  loadShopHTML(productos);
+}
+  function loadShopHTML(productos){
+    let shopContent = ``;
+    productos.forEach((producto) => {
+      shopContent += `
+      <div class="col mb-5">
+      <div class="card h-100">
+          <!-- Product image-->
+          <img class="card-img-top" src="${producto.image}" alt="..." />
+          <!-- Product details-->
+          <div class="card-body p-4">
+              <div class="text-center">
+                  <!-- Product name-->
+                  <h5 class="fw-bolder">${producto.nombre}</h5>
+                  <!-- Product reviews-->
+                   <div class="d-flex justify-content-center small text-warning mb-2">
+                   `;
+                   for (let index = 0; index < producto.puntuacion; index++) {
+                    shopContent+=`<div class="bi-star-fill"></div>`
+                     
+                   }
+                  shopContent+=`</div>
+                  <!-- Product price-->
+                  $${producto.precio}
+              </div>
+          </div>
+          <!-- Product actions-->
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+              <div class="text-center"><a class="btn btn-outline-blue mt-auto" href="/producto?id=${producto.id}">Más información</a></div>
+              <hr>
+              <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCart" data-id="${producto.id}">Añadir al carrito</button></div>
+          </div>
+      </div>
+  </div>
+      `;
+    });
+    document.querySelector("#shop-content").innerHTML = shopContent;
+  }
   function loadBotones(){
     btnsAddToCart = document.querySelectorAll(".addToCart");
     btnsAddToCart.forEach((btn) => {
@@ -26,18 +72,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
     btnNuevo.addEventListener("click", () => {
       ordenarPor("nuevos");
     });
-    console.log('BOTONES CARGADOS');
-
   }
-  function init() {
+ async function init() {
+    await loadProducts();
     loadBotones();
 
     if (localStorage.getItem("productos") === null) {
       // let productosLocalStorage = [];
       localStorage.setItem("productos", JSON.stringify(""));
     }
-    updateHTML();
-    console.log('TODO LISTO')
+    updateCartHTML();
   }
 
   async function addtoCart(id) {
@@ -55,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
-    updateHTML();
+    updateCartHTML();
   }
 
   async function ordenarPor(filtro) {
@@ -112,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           </div>
           <!-- Product actions-->
           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-          <div class="text-center"><a class="btn btn-outline-blue mt-auto addToCart" href="/producto/${producto.id}">Más información</a></div>
+          <div class="text-center"><a class="btn btn-outline-blue mt-auto" href="/producto/id=${producto.id}">Más información</a></div>
           <hr>              
           <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCart" data-id="${producto.id}">Añadir al carrito</button></div>
           </div>
@@ -123,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     loadBotones();
   }
 
-  function updateHTML() {
+  function updateCartHTML() {
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     let carrito = ``;
     let cantidad = 0;
@@ -132,32 +176,37 @@ document.addEventListener("DOMContentLoaded", function (event) {
       <tr>
         <td>${producto.nombre}</td>
         <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
-        <td><button class="reducir btn" data-id=${producto.id}><i class="fas fa-arrow-down"></i></button></td> 
+        <td><button class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
         <td>${producto.cantidad}</td> 
-        <td><button class="aumentar btn" data-id=${producto.id}><i class="fas fa-arrow-up"></i></button></td> 
+        <td><button class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
         <td>${producto.precio}</td> 
-        <td><button class="eliminar btn" data-id=${producto.id}><i class="fas fa-trash"></i></button></td> 
+        <td><button class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
         </tr>
       `;
       cantidad += producto.cantidad;
-    });
     document.querySelector("#carrito").innerHTML = carrito;
+    });
 
     btnsAumentar = document.querySelectorAll(`.aumentar`);
     btnsAumentar.forEach((btn) => {
       btn.addEventListener("click", (event) => {
+        console.log('AUMENTAR',event.target.dataset.id);
         aumentarCantidad(event.target.dataset.id);
       });
     });
     btnsReducir = document.querySelectorAll(`.reducir`);
     btnsReducir.forEach((btn) => {
       btn.addEventListener("click", (event) => {
+        console.log('REDUCIR',event.target.dataset.id);
+
         reducirCantidad(event.target.dataset.id);
       });
     });
     btnsEliminar = document.querySelectorAll(`.eliminar`);
     btnsEliminar.forEach((btn) => {
       btn.addEventListener("click", (event) => {
+        console.log('eliminar',event.target.dataset.id);
+
         sacarDelCarrito(event.target.dataset.id);
       });
     });
@@ -179,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     productosLocalStorage[indice].cantidad = productosLocalStorage[indice].cantidad + 1;
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
-    updateHTML();
+    updateCartHTML();
   }
   function reducirCantidad(id) {
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
@@ -187,26 +236,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
       (producto) => producto.id == id
     );
     productosLocalStorage[indice].cantidad = productosLocalStorage[indice].cantidad - 1;
+    localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
+
     if (productosLocalStorage[indice].cantidad == 0) {
       sacarDelCarrito(id);
     }
-    localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
-    updateHTML();
+    updateCartHTML();
   }
   function sacarDelCarrito(id) {
+
     console.log("SACAR", id);
 
-    productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
+    let productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
 
-    let indice = productosLocalStorage.findIndex(
-      (producto) => producto.id === id
+    productosLocalStorage = productosLocalStorage.filter(
+      (producto) => producto.id !== id
     );
-    productosLocalStorage.splice(indice, 1);
 
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
-    updateHTML();
+    updateCartHTML();
   }
   init();
 });
