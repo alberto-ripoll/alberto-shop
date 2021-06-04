@@ -45,7 +45,7 @@ template_header.innerHTML = `
 <header class="bg-dark py-5">
 <div class="container px-4 px-lg-5 my-5">
     <div class="text-center text-white">
-        <h1 class="display-4 fw-bolder">/h1>
+        <h1 class="display-4 fw-bolder" id="message">/h1>
             <h3 style="display:block;height:1rem;" id="viendo"></h3>
     </div>
 </div>
@@ -53,13 +53,34 @@ template_header.innerHTML = `
 `
 
 class Header extends HTMLElement{
+  // toggleCheckbox(){
+  //   this.dispatchEvent(this.checkEvent);
+  //   console.log(this.checkEvent);
+  // }
+  static get observedAttributes() {
+    return ['viendo'];
+}
+  attributeChangedCallback(name, oldValue, newValue) { // 4th W3C parameter = Namespace (not implemented in Browsers)
+     console.log("attributeChangedCallback", name, oldValue || "null", newValue);
+     this.shadowRoot.querySelector('#viendo').innerText = newValue;
+
+  }
     constructor(){
         super();
 
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(template_header.content.cloneNode(true));
         this.shadowRoot.querySelector('h1').innerText = this.getAttribute('message');
-        // this.innerHTML = `${this.getAttribute('message')}`;
+        // this.shadowRoot.querySelector('#viendo').innerText = this.getAttribute('viendo');
+      //   this.checkEvent = new CustomEvent("check", {
+      //     bubbles: true,
+      //     cancelable: false,
+      //   });
+
+      //   this.shadowRoot.addEventListener("check", function (e) {
+      //     console.log('listend to check event');
+      //     console.log(e);
+      // });
     }
 }
 

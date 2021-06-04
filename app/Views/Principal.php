@@ -64,9 +64,9 @@
 
                 <!-- Header-->
                 <?php if (isset($_SESSION['logged'])):?>
-                    <app-header message="Hola de nuevo, <?=$_SESSION["usuario"]?>"></app-header>
+                    <app-header id="header" viendo="" message="Hola de nuevo, <?=$_SESSION["usuario"]?>"></app-header>
                 <?php else:?>
-                    <app-header message="Bienvenido a la tienda"></app-header>
+                    <app-header id="header" viendo="" message="Bienvenido a la tienda"></app-header>
                 <?php endif?>
 
 
@@ -81,6 +81,7 @@
                             </ul>
                 <hr>
                 <div id="shop-content" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
                 </div>
             </div>
         </section>
@@ -94,6 +95,7 @@
         <script src="js/scripts.js"></script>
         <script src="js/navbar.js"></script>
         <script src="js/header.js"></script>
+        <script src="js/producto.js"></script>
 
     </body>
 </html>
