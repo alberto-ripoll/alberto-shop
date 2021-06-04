@@ -53,35 +53,21 @@ template_header.innerHTML = `
 `
 
 class Header extends HTMLElement{
-  // toggleCheckbox(){
-  //   this.dispatchEvent(this.checkEvent);
-  //   console.log(this.checkEvent);
-  // }
+  constructor(){
+    super();
+}
   static get observedAttributes() {
     return ['viendo'];
 }
-  attributeChangedCallback(name, oldValue, newValue) { // 4th W3C parameter = Namespace (not implemented in Browsers)
+  attributeChangedCallback(name, oldValue, newValue) {
      console.log("attributeChangedCallback", name, oldValue || "null", newValue);
      this.shadowRoot.querySelector('#viendo').innerText = newValue;
-
   }
-    constructor(){
-        super();
-
-        this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(template_header.content.cloneNode(true));
-        this.shadowRoot.querySelector('h1').innerText = this.getAttribute('message');
-        // this.shadowRoot.querySelector('#viendo').innerText = this.getAttribute('viendo');
-      //   this.checkEvent = new CustomEvent("check", {
-      //     bubbles: true,
-      //     cancelable: false,
-      //   });
-
-      //   this.shadowRoot.addEventListener("check", function (e) {
-      //     console.log('listend to check event');
-      //     console.log(e);
-      // });
-    }
+  connectedCallback() {
+    this.attachShadow({mode: 'open'})
+    this.shadowRoot.appendChild(template_header.content.cloneNode(true));
+    this.shadowRoot.querySelector('h1').innerText = this.getAttribute('message');
+ }
 }
 
 window.customElements.define('app-header',Header);

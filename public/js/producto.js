@@ -2,7 +2,6 @@ class Producto extends HTMLElement{
 
     constructor(){
         super();
-        this.loadHTML();
     }
 
      async connectedCallback() {

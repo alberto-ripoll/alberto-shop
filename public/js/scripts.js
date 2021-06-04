@@ -40,7 +40,7 @@ async function loadProducts(){
       ordenarPor("nuevos");
     });
   }
- async function init() {
+  async function init() {
     await loadProducts();
     loadBotones();
 
@@ -50,8 +50,6 @@ async function loadProducts(){
     }
     // updateCartHTML();
   }
-
-
 
   async function ordenarPor(filtro) {
     let shopContent = document.querySelector("#shop-content");

@@ -15,52 +15,12 @@
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
-    <style>
-    .eliminar{
-        color: red;
-    }
-    .aumentar{
-        color: green;
-    }
-    .reducir{
-        color:grey;
-    }
-    .card-img-top{
-        height:19rem;
-        width: 16rem;
-    }
-        td,th{
-            padding: 1rem;
-            text-align: center;
-        }
-        #cnt-finalizarCompra{
-            visibility: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-left: 1rem;
-        }
-        .btn-outline-blue{
-            border-color: #1167b1;  
-            color:#1167b1;   
-        }
-        .btn-outline-blue:hover{
-            background-color: #1167b1;
-            color:white;
-        }
-        .btn-outline-green{
-            border-color:green;  
-            color:green;   
-        }
-        .btn-outline-green:hover{
-            background-color: green;
-            color:white;
-        }
-    </style>
     <body>
 
         <!-- Navigation-->
-        <app-navbar></app-navbar>
+        <app-navbar>
+                    <app-carrito slot="carrito">
+        </app-navbar>
 
                 <!-- Header-->
                 <?php if (isset($_SESSION['logged'])):?>
@@ -68,7 +28,6 @@
                 <?php else:?>
                     <app-header id="header" viendo="" message="Bienvenido a la tienda"></app-header>
                 <?php endif?>
-
 
         <!-- Section-->
         <section class="py-5">
@@ -81,7 +40,7 @@
                             </ul>
                 <hr>
                 <div id="shop-content" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
+                     <!-- Aqui se cargaran los productos de la tienda-->
                 </div>
             </div>
         </section>
@@ -96,6 +55,7 @@
         <script src="js/navbar.js"></script>
         <script src="js/header.js"></script>
         <script src="js/producto.js"></script>
+        <script src="js/carrito.js"></script>
 
     </body>
 </html>
