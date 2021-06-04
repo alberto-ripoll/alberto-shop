@@ -19,7 +19,7 @@
 
         <!-- Navigation-->
         <app-navbar>
-                    <app-carrito slot="carrito">
+            <div slot="carrito"><app-carrito></app-carrito></div>
         </app-navbar>
 
                 <!-- Header-->

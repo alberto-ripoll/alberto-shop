@@ -60,13 +60,17 @@ class Header extends HTMLElement{
     return ['viendo'];
 }
   attributeChangedCallback(name, oldValue, newValue) {
-     console.log("attributeChangedCallback", name, oldValue || "null", newValue);
-     this.shadowRoot.querySelector('#viendo').innerText = newValue;
+     if (this.shadowRoot!=null){
+      this.shadowRoot.querySelector('#viendo').innerText = newValue;
+
+     }
   }
   connectedCallback() {
     this.attachShadow({mode: 'open'})
     this.shadowRoot.appendChild(template_header.content.cloneNode(true));
-    this.shadowRoot.querySelector('h1').innerText = this.getAttribute('message');
+    this.shadowRoot.querySelector('#message').innerText = this.getAttribute('message');
+    this.shadowRoot.querySelector('#viendo').innerText = this.getAttribute('viendo');
+
  }
 }
 
