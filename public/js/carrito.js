@@ -27,11 +27,10 @@ carrito_template.innerHTML = `
             
                              </table>
                          </li>
+                         </ul>
                          <div id="cnt-finalizarCompra">
                                      <a href="/pay" class="btn btn-outline-green"><i class="bi bi-currency-bitcoin"></i>Finalizar compra</a>
                                  </div>
-                     </ul>
-             </li>
               `
 class Carrito extends HTMLElement{
     constructor(){
