@@ -22,57 +22,75 @@ async function loadProducts(){
       updateCartHTML();
     });;
   }
+  function initModal(){
+    modal = document.querySelector("x-modal");
+    modal.addEventListener("cancel", function() {
+      console.log("cancel event raised");
+      modal.visible = false;
+    });
+    modal.addEventListener("ok", function() {
+      console.log("ok event raised");
+      modal.visible = false;
+    });
+  
+    open = document.querySelector(".open");
+    open.addEventListener("click", function() {
+      modal.visible = true;
+    });
+  }
  function updateCartHTML() {
-    productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
-    let carrito = ``;
-    let cantidad = 0;
-    productosLocalStorage.forEach((producto) => {
-      carrito += `
-      <tr>
-        <td>${producto.nombre}</td>
-        <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
-        <td><button class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
-        <td>${producto.cantidad}</td> 
-        <td><button class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
-        <td>${producto.precio}</td> 
-        <td><button class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
-        </tr>
-      `;
-      cantidad += producto.cantidad;
-    document.querySelector("#carrito").innerHTML = carrito;
-    });
+  modal = document.querySelector("x-modal");
+  modal.setAttribute('update','true');
+    // productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
+    // let carrito = ``;
+    // let cantidad = 0;
+    // productosLocalStorage.forEach((producto) => {
+    //   carrito += `
+    //   <tr>
+    //     <td>${producto.nombre}</td>
+    //     <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
+    //     <td><button class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
+    //     <td>${producto.cantidad}</td> 
+    //     <td><button class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
+    //     <td>${producto.precio}</td> 
+    //     <td><button class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
+    //     </tr>
+    //   `;
+    //   cantidad += producto.cantidad;
+    // document.querySelector("#carrito").innerHTML = carrito;
+    // });
    
-    btnsAumentar = document.querySelectorAll(`.aumentar`);
-    btnsAumentar.forEach((btn) => {
-      btn.addEventListener("click", (event) => {
-        console.log('AUMENTAR',event.target.dataset.id);
-        aumentarCantidad(event.target.dataset.id);
-      });
-    });
-    btnsReducir = document.querySelectorAll(`.reducir`);
-    btnsReducir.forEach((btn) => {
-      btn.addEventListener("click", (event) => {
-        console.log('REDUCIR',event.target.dataset.id);
+    // btnsAumentar = document.querySelectorAll(`.aumentar`);
+    // btnsAumentar.forEach((btn) => {
+    //   btn.addEventListener("click", (event) => {
+    //     console.log('AUMENTAR',event.target.dataset.id);
+    //     aumentarCantidad(event.target.dataset.id);
+    //   });
+    // });
+    // btnsReducir = document.querySelectorAll(`.reducir`);
+    // btnsReducir.forEach((btn) => {
+    //   btn.addEventListener("click", (event) => {
+    //     console.log('REDUCIR',event.target.dataset.id);
    
-        reducirCantidad(event.target.dataset.id);
-      });
-    });
-    btnsEliminar = document.querySelectorAll(`.eliminar`);
-    btnsEliminar.forEach((btn) => {
-      btn.addEventListener("click", (event) => {
-        console.log('eliminar',event.target.dataset.id);
+    //     reducirCantidad(event.target.dataset.id);
+    //   });
+    // });
+    // btnsEliminar = document.querySelectorAll(`.eliminar`);
+    // btnsEliminar.forEach((btn) => {
+    //   btn.addEventListener("click", (event) => {
+    //     console.log('eliminar',event.target.dataset.id);
    
-        sacarDelCarrito(event.target.dataset.id);
-      });
-    });
-    document.querySelector("#cantidadCarrito").innerHTML = cantidad;
-    if (document.querySelector("#cantidadCarrito").innerHTML == 0) {
-      document.querySelector("#cnt-finalizarCompra").style.visibility =
-        "hidden";
-    } else {
-      document.querySelector("#cnt-finalizarCompra").style.visibility =
-        "visible";
-    }
+    //     sacarDelCarrito(event.target.dataset.id);
+    //   });
+    // });
+    // document.querySelector("#cantidadCarrito").innerHTML = cantidad;
+    // if (document.querySelector("#cantidadCarrito").innerHTML == 0) {
+    //   document.querySelector("#cnt-finalizarCompra").style.visibility =
+    //     "hidden";
+    // } else {
+    //   document.querySelector("#cnt-finalizarCompra").style.visibility =
+    //     "visible";
+    // }
   }
   function loadBotones(){
     btnsAddToCart = document.querySelectorAll(".addToCart");
@@ -103,6 +121,7 @@ async function loadProducts(){
       // let productosLocalStorage = [];
       localStorage.setItem("productos", JSON.stringify([]));
     }
+    initModal();
     updateCartHTML();
   }
 

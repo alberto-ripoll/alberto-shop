@@ -19,52 +19,21 @@
 
 <body>
 
-    <!-- Navigation-->
-    <nav style="position: fixed;z-index: 1;width: 100%;" class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="/">Alberto-Shop</a>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="btn btn-outline-dark dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi-cart-fill me-1"></i>Carrito<span id="cantidadCarrito" class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>
-                    <table style="left:-100px;position:absolute;width:50rem;" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <thead>
-                            <tr>
-                                <th>PRODUCTO</th>
-                                <th>IMAGEN</th>
-                                <th colspan="3">CANTIDAD</th>
-                                <th>PRECIO</th>
-                            </tr>
-                        </thead>
-                        <tbody id="carrito">
-                        
-                        </tbody>
-
-                    </table>
-                </li>
-            </ul>
-            <div id="cnt-finalizarCompra">
-                <a href="/pay" class="btn btn-outline-green"><i class="bi bi-currency-bitcoin"></i>Finalizar compra</a>
-            </div>
+    <app-navbar>
+        <div slot="carrito">
+            <button class="btn btn-outline-dark open"><i class="bi-cart-fill me-1"></i>Carrito<span id="cantidadCarrito" class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>
+            <x-modal title="Carrito de compra"></x-modal>
         </div>
+    </app-navbar>
 
-        <a class="btn btn-outline-dark" href="/login">Iniciar sesión</a>
-        <a class="btn btn-outline-dark" href="/signin">Crear cuenta</a>
-        </div>
-        </div>
-    </nav>
-
-    <!-- <app-navbar>
-                    <app-carrito slot="carrito"></app-carrito>
-        </app-navbar> -->
-
-    <!-- Header-->
+    <!-- Header -->
     <?php if (isset($_SESSION['logged'])) : ?>
         <app-header id="header" viendo="" message="Hola de nuevo, <?= $_SESSION["usuario"] ?>"></app-header>
     <?php else : ?>
         <app-header id="header" viendo="" message="Bienvenido a la tienda"></app-header>
     <?php endif ?>
 
-    <!-- Section-->
+    <!-- Section -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ordenar por</a>
@@ -75,7 +44,7 @@
             </ul>
             <hr>
             <div id="shop-content" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <!-- Aqui se cargaran los productos de la tienda-->
+                <!-- Aqui se cargaran los productos de la tienda--> 
             </div>
         </div>
     </section>
@@ -84,7 +53,7 @@
         <div class="container">
             <p class="m-0 text-center text-white">Copyright &copy; Alberto-Shop 2021</p>
         </div>
-    </footer>
+    </footer> 
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
@@ -93,6 +62,7 @@
     <script src="js/header.js"></script>
     <script src="js/producto_card.js"></script>
     <script src="js/carrito.js"></script>
+    <script src="js/modal.js"></script>
 
 </body>
 

@@ -49,7 +49,6 @@ class RouterHandler extends Middleware{
         }else{
             call_user_func_array([$objController,$metodo],[$parametros_metodo]);
         }
-
         $this->res->file = $objController->file;
         $this->res->redirect = $objController->redirect;
         return $this->res->res(["status"=>200,"data"=>$objController->data,"viewname"=>$objController->viewname]);
