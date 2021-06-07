@@ -61,9 +61,12 @@ class Modal extends HTMLElement {
       (producto) => producto.id != id
     );
     console.log(productosLocalStorage);
+    let cantidad = productosLocalStorage.length;
+
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
     this.updateCartHTML();
+    document.querySelector("#cantidadCarrito").innerHTML = cantidad;
   }
   static get observedAttributes() {
     return ["visible", "title",'update'];
@@ -188,8 +191,38 @@ class Modal extends HTMLElement {
             color:white;
             cursor: pointer;
           }
+          .btn {
+            display: inline-block;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+               -moz-user-select: none;
+                -ms-user-select: none;
+                    user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+          }
+          .eliminar{
+            color: red;
+          }
+          .aumentar{
+            color: green;
+          }
+          .reducir{
+            color:grey;
+          }
 
         </style>
+        
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <div class='${wrapperClass}'>
