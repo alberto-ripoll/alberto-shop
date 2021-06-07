@@ -12,8 +12,8 @@ carrito_template.innerHTML = `
 
                      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                          <li class="nav-item dropdown">
-                             <a class="btn btn-outline-dark dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi-cart-fill me-1"></i>Carrito<span id="cantidadCarrito" class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>
-                             <table style="left:-100px;position:absolute;width:50rem;" class="dropdown-menu"  aria-labelledby="navbarDropdown">
+                             <a class="btn btn-outline-dark dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi-cart-fill me-1"></i>Carrito<span id="cantidadCarrito" class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>
+                             <table style="left:-100px;position:absolute;width:50rem;" class="dropdown-menu" aria-labelledby="navbarDropdown">
                              <thead>
                                  <tr>
                                      <th>PRODUCTO</th>    
@@ -27,10 +27,9 @@ carrito_template.innerHTML = `
             
                              </table>
                          </li>
+
                          </ul>
-                         <div id="cnt-finalizarCompra">
-                                     <a href="/pay" class="btn btn-outline-green"><i class="bi bi-currency-bitcoin"></i>Finalizar compra</a>
-                                 </div>
+
               `
 class Carrito extends HTMLElement{
     constructor(){

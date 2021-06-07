@@ -25,7 +25,7 @@
       padding-left: 1rem;
   }
   .btn-outline-blue{
-      border-color: #1167b1;  
+      border-color: #1167b1 !important;  
       color:#1167b1;   
   }
   .btn-outline-blue:hover{
@@ -40,7 +40,9 @@
       background-color: green;
       color:white;
   }
-
+.product-cnt{
+  /* display:flex; */
+}
 
 
 

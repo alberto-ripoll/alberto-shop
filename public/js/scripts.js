@@ -14,10 +14,65 @@ async function loadProducts(){
     let shopContent = ``;
     productos.forEach((producto) => {
       shopContent += `
-      <app-producto producto=${producto.id}></app-producto>
+      <producto-card producto=${producto.id}></producto-card>
       `;
     });
     document.querySelector("#shop-content").innerHTML = shopContent;
+    document.addEventListener("addToCart", (event) => {
+      updateCartHTML();
+    });;
+  }
+ function updateCartHTML() {
+    productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
+    let carrito = ``;
+    let cantidad = 0;
+    productosLocalStorage.forEach((producto) => {
+      carrito += `
+      <tr>
+        <td>${producto.nombre}</td>
+        <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
+        <td><button class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
+        <td>${producto.cantidad}</td> 
+        <td><button class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
+        <td>${producto.precio}</td> 
+        <td><button class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
+        </tr>
+      `;
+      cantidad += producto.cantidad;
+    document.querySelector("#carrito").innerHTML = carrito;
+    });
+   
+    btnsAumentar = document.querySelectorAll(`.aumentar`);
+    btnsAumentar.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        console.log('AUMENTAR',event.target.dataset.id);
+        aumentarCantidad(event.target.dataset.id);
+      });
+    });
+    btnsReducir = document.querySelectorAll(`.reducir`);
+    btnsReducir.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        console.log('REDUCIR',event.target.dataset.id);
+   
+        reducirCantidad(event.target.dataset.id);
+      });
+    });
+    btnsEliminar = document.querySelectorAll(`.eliminar`);
+    btnsEliminar.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        console.log('eliminar',event.target.dataset.id);
+   
+        sacarDelCarrito(event.target.dataset.id);
+      });
+    });
+    document.querySelector("#cantidadCarrito").innerHTML = cantidad;
+    if (document.querySelector("#cantidadCarrito").innerHTML == 0) {
+      document.querySelector("#cnt-finalizarCompra").style.visibility =
+        "hidden";
+    } else {
+      document.querySelector("#cnt-finalizarCompra").style.visibility =
+        "visible";
+    }
   }
   function loadBotones(){
     btnsAddToCart = document.querySelectorAll(".addToCart");
@@ -48,7 +103,7 @@ async function loadProducts(){
       // let productosLocalStorage = [];
       localStorage.setItem("productos", JSON.stringify([]));
     }
-    // updateCartHTML();
+    updateCartHTML();
   }
 
   async function ordenarPor(filtro) {
@@ -70,10 +125,10 @@ async function loadProducts(){
       document.querySelector("#header").setAttribute('viendo','Viendo los mejor valorados');
 
     }
-    
+
     if (filtro == "baratos") {
       productos.sort(function (a, b) {
-        return a.precio - b.precio;
+        return b.precio - a.precio;
       });
       document.querySelector("#header").setAttribute('viendo','Viendo los más económicos');
     }
@@ -82,65 +137,13 @@ async function loadProducts(){
 
     productos.forEach((producto) => {
       shopContent += `
-      <app-producto producto=${producto.id}></app-producto>
+      <producto-card producto=${producto.id}></producto-card>
       `;
     });
     document.querySelector("#shop-content").innerHTML = shopContent;
     loadBotones();
   }
 
-  // function updateCartHTML() {
-  //   productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
-  //   let carrito = ``;
-  //   let cantidad = 0;
-  //   productosLocalStorage.forEach((producto) => {
-  //     carrito += `
-  //     <tr>
-  //       <td>${producto.nombre}</td>
-  //       <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
-  //       <td><button class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
-  //       <td>${producto.cantidad}</td> 
-  //       <td><button class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
-  //       <td>${producto.precio}</td> 
-  //       <td><button class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
-  //       </tr>
-  //     `;
-  //     cantidad += producto.cantidad;
-  //   document.querySelector("#carrito").innerHTML = carrito;
-  //   });
-
-  //   btnsAumentar = document.querySelectorAll(`.aumentar`);
-  //   btnsAumentar.forEach((btn) => {
-  //     btn.addEventListener("click", (event) => {
-  //       console.log('AUMENTAR',event.target.dataset.id);
-  //       aumentarCantidad(event.target.dataset.id);
-  //     });
-  //   });
-  //   btnsReducir = document.querySelectorAll(`.reducir`);
-  //   btnsReducir.forEach((btn) => {
-  //     btn.addEventListener("click", (event) => {
-  //       console.log('REDUCIR',event.target.dataset.id);
-
-  //       reducirCantidad(event.target.dataset.id);
-  //     });
-  //   });
-  //   btnsEliminar = document.querySelectorAll(`.eliminar`);
-  //   btnsEliminar.forEach((btn) => {
-  //     btn.addEventListener("click", (event) => {
-  //       console.log('eliminar',event.target.dataset.id);
-
-  //       sacarDelCarrito(event.target.dataset.id);
-  //     });
-  //   });
-  //   document.querySelector("#cantidadCarrito").innerHTML = cantidad;
-  //   if (document.querySelector("#cantidadCarrito").innerHTML == 0) {
-  //     document.querySelector("#cnt-finalizarCompra").style.visibility =
-  //       "hidden";
-  //   } else {
-  //     document.querySelector("#cnt-finalizarCompra").style.visibility =
-  //       "visible";
-  //   }
-  // }
 
   function aumentarCantidad(id) {
     productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
