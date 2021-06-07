@@ -19,8 +19,7 @@ class Modal extends HTMLElement {
       `;
       cantidad += producto.cantidad;
     });
-
-
+    this.shadowRoot.querySelector('#carrito').innerHTML = this.carritoHTML;
   }
 
   aumentarCantidad(id) {
@@ -126,7 +125,6 @@ class Modal extends HTMLElement {
 
     }
     _render() {
-      this.updateCartHTML();
       const wrapperClass = this.visible ? "wrapper visible" : "wrapper";
 
       const container = document.createElement("div");
@@ -224,6 +222,7 @@ class Modal extends HTMLElement {
       // shadowRoot.appendChild(container);
       this.shadowRoot.appendChild(container.cloneNode(true));
 
+      this.updateCartHTML();
 
     }
   }

@@ -45,11 +45,11 @@ async function loadProducts(){
 
     let cantidad = JSON.parse(localStorage.getItem("productos")).length;
     document.querySelector("#cantidadCarrito").innerHTML = cantidad;
-    // if (cantidad == 0) {
-    //   document.querySelector("#cnt-finalizarCompra").style.visibility ="hidden";
-    // } else {
-    //   document.querySelector("#cnt-finalizarCompra").style.visibility ="visible";
-    // }
+    if (cantidad == 0) {
+      document.querySelector("#cnt-finalizarCompra").style.visibility ="hidden";
+    } else {
+      document.querySelector("#cnt-finalizarCompra").style.visibility ="visible";
+    }
   }
 
  function updateCartHTML() {
