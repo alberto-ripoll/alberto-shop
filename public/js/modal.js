@@ -138,6 +138,7 @@ class Modal extends HTMLElement {
   
     connectedCallback() {
     this._render();
+    this._attachEventHandlers();
 
     }
     _attachEventHandlers() {
@@ -150,8 +151,38 @@ class Modal extends HTMLElement {
       okButton.addEventListener('click', e => {
         this.dispatchEvent(new CustomEvent("ok"))
         this.visible = false;
-
       });
+          btnsAumentar = this.shadowRoot.querySelectorAll(`.aumentar`);
+    btnsAumentar.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        console.log('AUMENTAR',event.target.dataset.id);
+        aumentarCantidad(event.target.dataset.id);
+      });
+    });
+    btnsReducir = this.shadowRoot.querySelectorAll(`.reducir`);
+    btnsReducir.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        console.log('REDUCIR',event.target.dataset.id);
+   
+        reducirCantidad(event.target.dataset.id);
+      });
+    });
+    btnsEliminar = this.shadowRoot.querySelectorAll(`.eliminar`);
+    btnsEliminar.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        console.log('eliminar',event.target.dataset.id);
+   
+        sacarDelCarrito(event.target.dataset.id);
+      });
+    });
+    this.shadowRoot.querySelector("#cantidadCarrito").innerHTML = cantidad;
+    if (this.shadowRoot.querySelector("#cantidadCarrito").innerHTML == 0) {
+      this.shadowRoot.querySelector("#cnt-finalizarCompra").style.visibility =
+        "hidden";
+    } else {
+      this.shadowRoot.querySelector("#cnt-finalizarCompra").style.visibility =
+        "visible";
+    }
     }
     _render() {
       this.updateCartHTML();
@@ -250,7 +281,6 @@ class Modal extends HTMLElement {
   
       const shadowRoot = this.attachShadow({ mode: "open" });
       shadowRoot.appendChild(container);
-      this._attachEventHandlers();
 
     }
   }
