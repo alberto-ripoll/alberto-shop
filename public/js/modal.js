@@ -1,5 +1,6 @@
 class Modal extends HTMLElement {
   carritoHTML = ``;
+  visible = false;
   updateCartHTML() {
    let productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     this.carritoHTML = ``;
@@ -9,64 +10,35 @@ class Modal extends HTMLElement {
       <tr>
         <td>${producto.nombre}</td>
         <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
-        <td><button class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
+        <td><button onclick="this.getRootNode().host.reducirCantidad(${producto.id})" class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
         <td>${producto.cantidad}</td> 
-        <td><button class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
+        <td><button onclick="this.getRootNode().host.aumentarCantidad(${producto.id})" class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
         <td>${producto.precio}</td> 
-        <td><button class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
+        <td><button onclick="this.getRootNode().host.sacarDelCarrito(${producto.id})" class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
         </tr>
       `;
       cantidad += producto.cantidad;
-    //   console.log(document.querySelector("#carrito"));
-
-    // document.querySelector("#carrito").innerHTML = this.carritoHTML;
     });
 
-    // btnsAumentar = document.querySelectorAll(`.aumentar`);
-    // btnsAumentar.forEach((btn) => {
-    //   btn.addEventListener("click", (event) => {
-    //     console.log('AUMENTAR',event.target.dataset.id);
-    //     aumentarCantidad(event.target.dataset.id);
-    //   });
-    // });
-    // btnsReducir = document.querySelectorAll(`.reducir`);
-    // btnsReducir.forEach((btn) => {
-    //   btn.addEventListener("click", (event) => {
-    //     console.log('REDUCIR',event.target.dataset.id);
-   
-    //     reducirCantidad(event.target.dataset.id);
-    //   });
-    // });
-    // btnsEliminar = document.querySelectorAll(`.eliminar`);
-    // btnsEliminar.forEach((btn) => {
-    //   btn.addEventListener("click", (event) => {
-    //     console.log('eliminar',event.target.dataset.id);
-   
-    //     sacarDelCarrito(event.target.dataset.id);
-    //   });
-    // });
-    // document.querySelector("#cantidadCarrito").innerHTML = cantidad;
-    // if (document.querySelector("#cantidadCarrito").innerHTML == 0) {
-    //   document.querySelector("#cnt-finalizarCompra").style.visibility =
-    //     "hidden";
-    // } else {
-    //   document.querySelector("#cnt-finalizarCompra").style.visibility =
-    //     "visible";
-    // }
+
   }
 
   aumentarCantidad(id) {
-    productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
+    this.dispatchEvent(new CustomEvent("ok"))
+
+    let productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     let indice = productosLocalStorage.findIndex(
       (producto) => producto.id == id
     );
     productosLocalStorage[indice].cantidad = productosLocalStorage[indice].cantidad + 1;
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
-    updateCartHTML();
+    this.updateCartHTML();
   }
   reducirCantidad(id) {
-    productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
+    this.dispatchEvent(new CustomEvent("ok"))
+
+    let productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
     let indice = productosLocalStorage.findIndex(
       (producto) => producto.id == id
     );
@@ -74,43 +46,45 @@ class Modal extends HTMLElement {
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
     if (productosLocalStorage[indice].cantidad == 0) {
-      sacarDelCarrito(id);
+      this.sacarDelCarrito(id);
     }
 
-    updateCartHTML();
+    this.updateCartHTML();
   }
   sacarDelCarrito(id) {
+    this.dispatchEvent(new CustomEvent("ok"))
 
     console.log("SACAR", id);
 
     let productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
 
     productosLocalStorage = productosLocalStorage.filter(
-      (producto) => producto.id !== id
+      (producto) => producto.id != id
     );
-
+    console.log(productosLocalStorage);
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
-    updateCartHTML();
+    this.updateCartHTML();
   }
   static get observedAttributes() {
     return ["visible", "title",'update'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "title" && this.shadowRoot) {
+    if (name == "title" && this.shadowRoot) {
       this.shadowRoot.querySelector(".title").textContent = newValue;
     }
-    if (name === "visible" && this.shadowRoot) {
-      if (newValue === 'false') {
+    if (name == "visible" && this.shadowRoot) {
+      if (newValue == 'false') {
         this.shadowRoot.querySelector(".wrapper").classList.remove("visible");
       } else {
         this.shadowRoot.querySelector(".wrapper").classList.add("visible");
+        this.updateCartHTML();
       }
     }
-    if (name === "update" && this.shadowRoot) {
+    if (name == "update" && this.shadowRoot) {
       this.updateCartHTML();
-      this.removeAttribute("visible");
+      this.visible = false;
 
     }
   }
@@ -122,15 +96,12 @@ class Modal extends HTMLElement {
     this.setAttribute("title", value);
   }
   get visible() {
-    return this.hasAttribute("visible");
+    return this.getAttribute("visible");
   }
 
   set visible(value) {
-    if (value) {
-      this.setAttribute("visible", "");
-    } else {
-      this.removeAttribute("visible");
-    }
+    this.setAttribute("visible", value);
+
   }
     constructor() {
       super();
@@ -139,8 +110,8 @@ class Modal extends HTMLElement {
     connectedCallback() {
     this._render();
     this._attachEventHandlers();
-
     }
+
     _attachEventHandlers() {
       const cancelButton = this.shadowRoot.querySelector(".cancel");
       cancelButton.addEventListener('click', e => {
@@ -152,37 +123,7 @@ class Modal extends HTMLElement {
         this.dispatchEvent(new CustomEvent("ok"))
         this.visible = false;
       });
-          btnsAumentar = this.shadowRoot.querySelectorAll(`.aumentar`);
-    btnsAumentar.forEach((btn) => {
-      btn.addEventListener("click", (event) => {
-        console.log('AUMENTAR',event.target.dataset.id);
-        aumentarCantidad(event.target.dataset.id);
-      });
-    });
-    btnsReducir = this.shadowRoot.querySelectorAll(`.reducir`);
-    btnsReducir.forEach((btn) => {
-      btn.addEventListener("click", (event) => {
-        console.log('REDUCIR',event.target.dataset.id);
-   
-        reducirCantidad(event.target.dataset.id);
-      });
-    });
-    btnsEliminar = this.shadowRoot.querySelectorAll(`.eliminar`);
-    btnsEliminar.forEach((btn) => {
-      btn.addEventListener("click", (event) => {
-        console.log('eliminar',event.target.dataset.id);
-   
-        sacarDelCarrito(event.target.dataset.id);
-      });
-    });
-    this.shadowRoot.querySelector("#cantidadCarrito").innerHTML = cantidad;
-    if (this.shadowRoot.querySelector("#cantidadCarrito").innerHTML == 0) {
-      this.shadowRoot.querySelector("#cnt-finalizarCompra").style.visibility =
-        "hidden";
-    } else {
-      this.shadowRoot.querySelector("#cnt-finalizarCompra").style.visibility =
-        "visible";
-    }
+
     }
     _render() {
       this.updateCartHTML();
@@ -197,12 +138,12 @@ class Modal extends HTMLElement {
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: transparent;
+            background-color: #212529;
             opacity: 0.5;
             visibility: hidden;
             transform: scale(1.1);
             transition: visibility 0s linear .25s,opacity .25s 0s,transform .25s;
-            z-index: 9999;
+            z-index: 1;
           }
           .visible {
             opacity: 1;
@@ -279,8 +220,10 @@ class Modal extends HTMLElement {
           </div>
         </div>`;
   
-      const shadowRoot = this.attachShadow({ mode: "open" });
-      shadowRoot.appendChild(container);
+      this.attachShadow({ mode: "open" });
+      // shadowRoot.appendChild(container);
+      this.shadowRoot.appendChild(container.cloneNode(true));
+
 
     }
   }

@@ -22,7 +22,7 @@
     <app-navbar>
         <div slot="carrito">
             <button class="btn btn-outline-dark open"><i class="bi-cart-fill me-1"></i>Carrito<span id="cantidadCarrito" class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>
-            <x-modal title="Carrito de compra"></x-modal>
+            <x-modal title="Carrito de compra" visible="false"></x-modal>
         </div>
     </app-navbar>
 
