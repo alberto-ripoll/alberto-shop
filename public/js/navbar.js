@@ -5,7 +5,7 @@ nav_template.innerHTML = `
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
 
-<nav style="position: fixed;z-index: 1;width: 100%;" class="navbar navbar-expand-lg navbar-light bg-light">
+<nav style="position: sticky;z-index: 1;width: 100%;" class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container px-4 px-lg-5">
     <a class="navbar-brand" href="/">Alberto-Shop</a>
     <slot name="carrito"></slot>        

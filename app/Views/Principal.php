@@ -49,20 +49,18 @@
         </div>
     </section>
     <!-- Footer-->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Alberto-Shop 2021</p>
-        </div>
-    </footer> 
+    <app-footer></app-footer> 
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
+    <script src="js/principal.js"></script>
     <script src="js/scripts.js"></script>
     <script src="js/navbar.js"></script>
     <script src="js/header.js"></script>
     <script src="js/producto_card.js"></script>
     <script src="js/carrito.js"></script>
     <script src="js/modal.js"></script>
+    <script src="js/footer.js"></script>
 
 </body>
 

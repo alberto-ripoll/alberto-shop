@@ -1,4 +1,4 @@
-class Modal extends HTMLElement {
+class Carrito extends HTMLElement {
   carritoHTML = ``;
   visible = false;
   updateCartHTML() {
@@ -13,13 +13,16 @@ class Modal extends HTMLElement {
         <td><button onclick="this.getRootNode().host.reducirCantidad(${producto.id})" class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
         <td>${producto.cantidad}</td> 
         <td><button onclick="this.getRootNode().host.aumentarCantidad(${producto.id})" class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
-        <td>${producto.precio}</td> 
+        <td>${producto.precio}€</td> 
         <td><button onclick="this.getRootNode().host.sacarDelCarrito(${producto.id})" class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
         </tr>
       `;
       cantidad += producto.cantidad;
     });
     this.shadowRoot.querySelector('#carrito').innerHTML = this.carritoHTML;
+
+    document.querySelector("#cantidadCarrito").innerHTML = cantidad;
+
   }
 
   aumentarCantidad(id) {
@@ -61,12 +64,10 @@ class Modal extends HTMLElement {
       (producto) => producto.id != id
     );
     console.log(productosLocalStorage);
-    let cantidad = productosLocalStorage.length;
 
     localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
 
     this.updateCartHTML();
-    document.querySelector("#cantidadCarrito").innerHTML = cantidad;
   }
   static get observedAttributes() {
     return ["visible", "title",'update'];
@@ -127,6 +128,11 @@ class Modal extends HTMLElement {
       });
 
     }
+    vaciarCarrito(){
+      let productosLocalStorage = [];
+      localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
+      this.updateCartHTML();
+    }
     _render() {
       const wrapperClass = this.visible ? "wrapper visible" : "wrapper";
 
@@ -166,7 +172,7 @@ class Modal extends HTMLElement {
             border-radius: 2px;
             min-width: 300px;
             background-color:white;
-            height:400px;
+            min-height:400px;
             width:800px;
             display:flex;
             flex-direction:column;
@@ -228,7 +234,6 @@ class Modal extends HTMLElement {
         <div class='${wrapperClass}'>
           <div class='modal'>
             <span class='title'>${this.title}</span>
-            <div class='content'>
               <table>
               <thead>
                   <tr>
@@ -236,6 +241,8 @@ class Modal extends HTMLElement {
                       <th>IMAGEN</th> 
                       <th colspan="3">CANTIDAD</th>    
                       <th>PRECIO</th>   
+                      <th>X</th>   
+
                   </tr>
               </thead>
               <tbody id="carrito">
@@ -243,10 +250,9 @@ class Modal extends HTMLElement {
               </tbody>
               </table>
 
-            </div>
             <div class='button-container'>
-            <button class='cancel'>Cancel</button>
-            <button class='ok'>Okay</button>
+            <button onclick="this.getRootNode().host.vaciarCarrito()" class='cancel'>Vaciar carrito</button>
+            <button class='ok'>Comprar</button>
           </div>
           </div>
         </div>`;
@@ -259,4 +265,4 @@ class Modal extends HTMLElement {
 
     }
   }
-  window.customElements.define("x-modal", Modal);
+  window.customElements.define("x-modal", Carrito);

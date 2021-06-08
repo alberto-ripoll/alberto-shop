@@ -70,7 +70,12 @@
 </style>
 
 <body>
-    <nav style="position: fixed;z-index: 1;width: 100%;" class="navbar navbar-expand-lg navbar-light bg-light">
+<app-navbar>
+    <div slot="carrito">
+        <button class="btn btn-outline-dark open"><i class="bi-cart-fill me-1"></i>Carrito<span id="cantidadCarrito" class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>            <x-modal title="Carrito de compra" visible="false"></x-modal>
+    </div>
+</app-navbar>
+    <!-- <nav style="position: fixed;z-index: 1;width: 100%;" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="/">Alberto-Shop</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -107,142 +112,23 @@
                 <?php endif ?>
             </div>
         </div>
-    </nav>
-    <!-- Header-->
-
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <?php if (isset($_SESSION['logged'])) : ?>
-                    <h1 class="display-4 fw-bolder">Hola de nuevo, <?= $_SESSION["usuario"] ?></h1>
-                <?php else : ?>
-                    <h1 class="display-4 fw-bolder">Bienvenido a la tienda</h1>
-                <?php endif ?>
-                <h3 style="display:block;height:1rem;" id="viendo"></h3>
-
-            </div>
-        </div>
-    </header>
-    <hr>
-    <div id="shop-content" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <app-producto id="<?= $producto["id"] ?>"></app-producto>
+    </nav> -->
+    <div id="shop-content" style="margin-top:2rem;">
+                    <app-producto class="row justify-content-center gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4"
+                    id="<?= $producto["id"] ?>"></app-producto>
     </div>
     </div>
     </section>
     <!-- Footer-->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Alberto-Shop 2021</p>
-        </div>
-    </footer>
+    <app-footer></app-footer>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
     <script src="js/producto.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
-        function updateCartHTML() {
-            productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
-            let carrito = ``;
-            let cantidad = 0;
-            productosLocalStorage.forEach((producto) => {
-            carrito += `
-            <tr>
-                <td>${producto.nombre}</td>
-                <td><img height="100px" width="100px" src="${producto.image}" alt="..." /></td> 
-                <td><button class="reducir btn" data-id='${producto.id}'><i class="fas fa-arrow-down"></i></button></td> 
-                <td>${producto.cantidad}</td> 
-                <td><button class="aumentar btn" data-id='${producto.id}'><i class="fas fa-arrow-up"></i></button></td> 
-                <td>${producto.precio}</td> 
-                <td><button class="eliminar btn" data-id='${producto.id}'><i class="fas fa-trash"></i></button></td> 
-            </tr>
-            `;
-            cantidad += producto.cantidad;
-            document.querySelector("#carrito").innerHTML = carrito;
-            });
-        
-            btnsAumentar = document.querySelectorAll(`.aumentar`);
-            btnsAumentar.forEach((btn) => {
-            btn.addEventListener("click", (event) => {
-                console.log('AUMENTAR',event.target.dataset.id);
-                aumentarCantidad(event.target.dataset.id);
-            });
-            });
-            btnsReducir = document.querySelectorAll(`.reducir`);
-            btnsReducir.forEach((btn) => {
-                btn.addEventListener("click", (event) => {
-                console.log('REDUCIR',event.target.dataset.id);
-                reducirCantidad(event.target.dataset.id);
-                });
-            });
-            btnsEliminar = document.querySelectorAll(`.eliminar`);
-            btnsEliminar.forEach((btn) => {
-                btn.addEventListener("click", (event) => {
-                console.log('eliminar',event.target.dataset.id);    
-                sacarDelCarrito(event.target.dataset.id);
-            });
-            });
-            document.querySelector("#cantidadCarrito").innerHTML = cantidad;
-            if (document.querySelector("#cantidadCarrito").innerHTML == 0) {
-                document.querySelector("#cnt-finalizarCompra").style.visibility ="hidden";
-            } else {
-                document.querySelector("#cnt-finalizarCompra").style.visibility = "visible";
-            }
-            }
-
-        function aumentarCantidad(id) {
-                productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
-                let indice = productosLocalStorage.findIndex(
-                (producto) => producto.id == id
-                );
-                productosLocalStorage[indice].cantidad = productosLocalStorage[indice].cantidad + 1;
-                localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
-
-            updateCartHTML();
-        }
-        function reducirCantidad(id) {
-    productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
-    let indice = productosLocalStorage.findIndex(
-      (producto) => producto.id == id
-    );
-    productosLocalStorage[indice].cantidad = productosLocalStorage[indice].cantidad - 1;
-    localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
-
-    if (productosLocalStorage[indice].cantidad == 0) {
-      sacarDelCarrito(id);
-    }
-
-    updateCartHTML();
-  }
-  function sacarDelCarrito(id) {
-
-    console.log("SACAR", id);
-
-    let productosLocalStorage = JSON.parse(localStorage.getItem("productos"));
-
-    productosLocalStorage = productosLocalStorage.filter(
-      (producto) => producto.id !== id
-    );
-
-    localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
-
-    updateCartHTML();
-  }
-
-  async function init() {
-    document.addEventListener("addToCart", (event) => {
-      updateCartHTML();
-    });;
-    if (localStorage.getItem("productos") === null) {
-      // let productosLocalStorage = [];
-      localStorage.setItem("productos", JSON.stringify([]));
-    }
-    updateCartHTML();
-  }
-  init();
-
-            })
-            </script>
+    <script src="js/navbar.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/footer.js"></script>
 </body>
 
 </html>
