@@ -83,5 +83,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         await loadProducts();
         loadBotones();
       }
+      console.log('PRINCIPAL')
       init();
 })

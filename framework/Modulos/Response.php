@@ -35,7 +35,7 @@ class Response
         }
         if ($this->viewname!=''){
             // $this->viewname = alRUTA.'/app/Views/'.$this->viewname.'.php';      
-            $this->viewname = './html/index.html';          
+            $this->viewname = './index.html';          
 
             ($this->view)($this->viewname,$this->data);
         }else{

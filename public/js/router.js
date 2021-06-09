@@ -1,3 +1,4 @@
+import Principal from './components/Principal/principal.js';
 const navigateTo = url => {
     history.pushState(null,null,url);
     router();
@@ -5,8 +6,8 @@ const navigateTo = url => {
 
 const router = async () => {
     const rutas = [
-        {path:'/',view: () => console.log('Viendo /')},
-        {path:'/producto',view: () => console.log('Viendo /posts')},
+        {path:'/',view: Principal},
+        {path:'/productos',view: () => console.log('Viendo /productos')},
         {path:'/perfil',view: () => console.log('Viendo /perfil')},
     ]
 
@@ -25,9 +26,11 @@ const router = async () => {
             isMatch:true
         }
     }
-    console.log(ruta.route.view())
+    const view = new ruta.route.view();
+    document.querySelector('#app').innerHTML = await view.getHtml();
 }
 
+window.addEventListener('popstate',router);
 document.addEventListener('DOMContentLoaded', () =>{
     document.body.addEventListener("click", e => {
         if (e.target.matches("[data-link]")) {
