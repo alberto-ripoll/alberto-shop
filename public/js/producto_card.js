@@ -6,7 +6,10 @@ class ProductoCard extends HTMLElement{
 
      async connectedCallback() {
         this.attachShadow({mode: 'open'})
-            .innerHTML = `<link href="css/styles.css" rel="stylesheet" />`+
+            .innerHTML = `
+            <link href="css/styles.css" rel="stylesheet" />
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+            `+
             await this.loadHTML();
      }
 
@@ -21,34 +24,46 @@ class ProductoCard extends HTMLElement{
 
         let IDProducto = this.getAttribute('producto');
         const producto = await this.getProducto(IDProducto);
+        console.log(producto.puntuacion);
         let shopContent = ``;
           shopContent += `
           <div class="col mb-5">
           <div class="card h-100">
               <!-- Product image-->
-              <img class="card-img-top" src="${producto.image}" alt="..." />
-              <!-- Product details-->
-              <div class="card-body p-4">
-                  <div class="text-center">
-                      <!-- Product name-->
-                      <h5 class="fw-bolder">${producto.nombre}</h5>
-                      <!-- Product reviews-->
-                       <div class="d-flex justify-content-center small text-warning mb-2">
-                       `;
-                       for (let index = 0; index < producto.puntuacion; index++) {
-                        shopContent+=`<div class="bi-star-fill"></div>`
-                         
-                       }
-                      shopContent+=`</div>
-                      <!-- Product price-->
-                      $${producto.precio}
-                  </div>
-              </div>
+              <div style="height: 400px; display:flex; flex-direction:column;">
+              <div>
+                <img class="card-img-top" src="${producto.image}" alt="..." />
+              </div> 
+                <!-- Product details-->
+                <div class="card-body" style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">
+                    <div class="text-center mt-auto">
+                        <!-- Product name-->
+                        <h5 class="fw-bolder">${producto.nombre}</h5>
+                        <!-- Product reviews-->
+                         <div class="d-flex justify-content-center small text-warning mb-2">
+                         `;
+                         for (let index = 0; index < producto.puntuacion; index++) {
+                          shopContent +=`
+                          <div class="bi-star-fill"></div>
+                            `                        
+                        }
+                        shopContent+=`</div>
+                        <!-- Product price-->
+                        $${producto.precio}
+                    </div>
+                </div>
+                </div> 
+             
+              <hr>
+
               <!-- Product actions-->
-              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                  <div class="text-center"><a class="btn btn-outline-blue mt-auto" href="/producto?id=${producto.id}">Más información</a></div>
-                  <hr>
-                  <div class="text-center"><button onclick="this.getRootNode().host.addtoCart(${producto.id})" class="btn btn-outline-dark mt-auto addToCart" data-id="${producto.id}">Añadir al carrito</button></div>
+              <div class="card-footer pt-0 border-top-0 bg-transparent">
+                  <div class="text-center p-2"><a class="btn btn-outline-blue mt-auto" href="/producto?id=${producto.id}">Más información</a></div>
+                  <div class="text-center p-2"><button onclick="this.getRootNode().host.addtoCart(${producto.id})" class="btn btn-outline-dark mt-auto addToCart" data-id="${producto.id}">Añadir al carrito</button></div>
               </div>
           </div>
       </div>

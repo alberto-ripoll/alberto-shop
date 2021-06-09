@@ -21,7 +21,7 @@ class Carrito extends HTMLElement {
     });
     this.shadowRoot.querySelector('#carrito').innerHTML = this.carritoHTML;
 
-    document.querySelector("#cantidadCarrito").innerHTML = cantidad;
+    document.querySelector("#cantidadCarrito").innerText = cantidad;
 
   }
 

@@ -31,6 +31,8 @@ class Navbar extends HTMLElement{
     
         connectedCallback() {
             this.attachShadow({mode: 'open'});
+            let logged = localStorage.getItem("logged");
+
             this.shadowRoot.appendChild(nav_template.content.cloneNode(true));
         }
 
