@@ -16,18 +16,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
       document.querySelector("x-modal").setAttribute('visible','false')
     });
     document.querySelector("x-modal").addEventListener("ok", function() {
-      console.log("ok event raised");
       document.querySelector("x-modal").setAttribute('visible','false')
     });
   
 
-    let cantidad = JSON.parse(localStorage.getItem("productos")).length;
-    document.querySelector("#cantidadCarrito").innerHTML = cantidad;
-    if (cantidad == 0) {
-      // document.querySelector("#cnt-finalizarCompra").style.visibility ="hidden";
-    } else {
-      // document.querySelector("#cnt-finalizarCompra").style.visibility ="visible";
-    }
+    let productos = JSON.parse(localStorage.getItem("productos"));
+    let cantidad = 0;
+    productos.forEach(producto => {
+      cantidad += producto.cantidad;
+    });
+    document.querySelector("#cantidadCarrito").innerText = cantidad;
   }
 
   function updateCartHTML() {
