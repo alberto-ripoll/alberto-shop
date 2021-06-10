@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         let shopContent = ``;
         productos.forEach((producto) => {
           shopContent += `
-          <producto-card data-link href=/productos/${producto.id} producto=${producto.id}></producto-card>
+          <producto-card producto=${producto.id}></producto-card>
           `;
         });
         document.querySelector("#shop-content").innerHTML = shopContent;

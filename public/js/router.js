@@ -1,6 +1,11 @@
 import Principal from './components/Principal/principal.js';
 import Producto from './components/Producto/producto.js';
 import Error404 from './components/Error404/error404.js';
+const navigateTo = url => {
+    history.pushState(null,null,url);
+    router();
+}
+
 
 const pathToRegex = path => new RegExp("^"+ path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -43,6 +48,7 @@ window.addEventListener('popstate',router);
 document.addEventListener('DOMContentLoaded', () =>{
     document.body.addEventListener("click", e => {
         if (e.target.matches("[data-link]")) {
+            e.preventDefault();
             navigateTo(e.target.getAttribute('href'));
         }
     })
