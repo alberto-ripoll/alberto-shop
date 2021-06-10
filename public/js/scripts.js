@@ -28,18 +28,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
     document.querySelector("#cantidadCarrito").innerText = cantidad;
   }
 
-  function updateCartHTML() {
-    modal = document.querySelector("x-modal");
-    modal.setAttribute('update','true');
-  }
-
   async function init() {
     if (localStorage.getItem("productos") === null) {
       // let productosLocalStorage = [];
       localStorage.setItem("productos", JSON.stringify([]));
     }
     initModal();
-    updateCartHTML();
   }
 
 

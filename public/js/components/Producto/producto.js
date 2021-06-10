@@ -3,11 +3,10 @@ import AbstractView from '../../AbstractView.js';
 
 export default class Producto extends AbstractView{
    IDProducto;
-    constructor(){
-        super();
+    constructor(params){
+        super(params);
         this.setTitle('Información del producto');
-        let params = location.pathname.split('/');
-        this.IDProducto = params[2];
+        this.IDProducto = params['id'];
     }
     async getProducto(id){
         const res = await axios.get(
@@ -82,7 +81,7 @@ export default class Producto extends AbstractView{
                   <div class="text-center"><button onclick="this.getRootNode().host.addtoCart(${producto.id})" class="btn btn-outline-dark mt-auto addToCart" data-id="${producto.id}">Añadir al carrito</button></div>
               </div>
           </div>
-      </div>
+        </div>
       </div>
           `;
       return shopContent;

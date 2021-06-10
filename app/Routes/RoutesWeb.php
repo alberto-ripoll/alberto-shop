@@ -33,6 +33,6 @@ class RoutesWeb{
         Router::post('/signin','App\Controllers\SigninController@signin'); 
         Router::post('/login','App\Controllers\LoginController@login'); 
 
-        Router::get('/',SpaController::class); 
+        Router::get('/*',SpaController::class); 
     }
 }   

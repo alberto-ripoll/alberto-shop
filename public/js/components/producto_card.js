@@ -83,6 +83,7 @@ class ProductoCard extends HTMLElement{
           productosLocalStorage[indice] = newProducto;
         }
         localStorage.setItem("productos", JSON.stringify(productosLocalStorage));
+        document.querySelector("#cantidadCarrito").innerText = parseInt(document.querySelector("#cantidadCarrito").innerText) + 1;
         this.emitEvent(id);
         // updateCartHTML();
     }

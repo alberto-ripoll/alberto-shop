@@ -2,34 +2,32 @@ import Principal from './components/Principal/principal.js';
 import Producto from './components/Producto/producto.js';
 import Error404 from './components/Error404/error404.js';
 
-const navigateTo = url => {
-    history.pushState(null,null,url);
-    router();
-}
+const pathToRegex = path => new RegExp("^"+ path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
+const getParams = match => {
+    const values = match.result.slice(1);
+    const keys = Array.from(match.route.path.matchAll(/:(\w+)/g)).map(result => result[1]);
+
+    return Object.fromEntries(keys.map((key,i)=> {
+        return [key,values[i]]
+    }))
+}
 const router = async () => {
     const rutas = [
         {path:'',view: Error404},
         {path:'/',view: Principal},
-        {path:'/productos',view: Producto},
+        {path:'/productos/:id',view: Producto},
     ]
     console.log(rutas);
 
     const matches = rutas.map(route =>{
-        let url = location.pathname.split('/');
-        if (url[1]!=""){
-            return {
-                route: route,
-                isMatch: '/'+url[1] === route.path
-            }  
-        }
         return {
             route: route,
-            isMatch: location.pathname === route.path
+            result: location.pathname.match(pathToRegex(route.path))
             }
     })
 
-    let ruta = matches.find(match => match.isMatch);
+    let ruta = matches.find(route => route.result !== null);
     if (!ruta){
         ruta = {
             route : rutas[0],
@@ -37,7 +35,7 @@ const router = async () => {
         }
     }
     
-    const view = new ruta.route.view();
+    const view = new ruta.route.view(getParams(ruta));
     document.querySelector('#app').innerHTML = await view.getHtml();
 }
 

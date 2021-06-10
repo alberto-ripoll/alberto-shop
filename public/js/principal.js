@@ -17,9 +17,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
           `;
         });
         document.querySelector("#shop-content").innerHTML = shopContent;
-        document.addEventListener("addToCart", (event) => {
-          updateCartHTML();
-        });;
       }
     function loadBotones(){
     btnsAddToCart = document.querySelectorAll(".addToCart");
