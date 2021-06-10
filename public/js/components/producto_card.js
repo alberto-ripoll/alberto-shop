@@ -24,7 +24,6 @@ class ProductoCard extends HTMLElement{
 
         let IDProducto = this.getAttribute('producto');
         const producto = await this.getProducto(IDProducto);
-        console.log(producto.puntuacion);
         let shopContent = ``;
           shopContent += `
           <div class="col mb-5">
@@ -62,7 +61,7 @@ class ProductoCard extends HTMLElement{
 
               <!-- Product actions-->
               <div class="card-footer pt-0 border-top-0 bg-transparent">
-                  <div class="text-center p-2"><a class="btn btn-outline-blue mt-auto" href="/producto?id=${producto.id}">Más información</a></div>
+                  <div class="text-center p-2"><button data-link class="btn btn-outline-blue mt-auto" href="#">Más información</a></div>
                   <div class="text-center p-2"><button onclick="this.getRootNode().host.addtoCart(${producto.id})" class="btn btn-outline-dark mt-auto addToCart" data-id="${producto.id}">Añadir al carrito</button></div>
               </div>
           </div>

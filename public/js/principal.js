@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         let shopContent = ``;
         productos.forEach((producto) => {
           shopContent += `
-          <producto-card producto=${producto.id}></producto-card>
+          <producto-card data-link href=/productos/${producto.id} producto=${producto.id}></producto-card>
           `;
         });
         document.querySelector("#shop-content").innerHTML = shopContent;
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     
         productos.forEach((producto) => {
           shopContent += `
-          <producto-card producto=${producto.id}></producto-card>
+          <producto-card data-link href=/productos/${producto.id} producto=${producto.id}></producto-card>
           `;
         });
         document.querySelector("#shop-content").innerHTML = shopContent;
@@ -83,6 +83,5 @@ document.addEventListener("DOMContentLoaded", function (event) {
         await loadProducts();
         loadBotones();
       }
-      console.log('PRINCIPAL')
       init();
 })

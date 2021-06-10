@@ -13,10 +13,10 @@ use App\Controllers\LogoutController;
 use App\Controllers\PayController;
 use App\Controllers\Productos\VerTodosProductosController;
 
-use App\Controllers\PrincipalController;
 use App\Controllers\Productos\ProductoController;
 use App\Controllers\Productos\VerProductoController;
 use App\Controllers\SigninController;
+use App\Controllers\SpaController;
 // use App\Middleware\FormOnlyNumbersMiddleware;
 use App\Middleware\HttpMethodMiddleware;
 
@@ -26,25 +26,13 @@ class RoutesWeb{
      * @return void
      */
     public static function defineRoutes(){
-        Router::get('/',PrincipalController::class); 
-        Router::get('/pay',PayController::class); 
-        Router::get('/producto',ProductoController::class); 
-
-        Router::get('/productos/:id',LoginController::class); 
-
-        Router::get('/signin',SigninController::class); 
-        Router::post('/signin','App\Controllers\SigninController@signin'); 
-
-        Router::get('/login',LoginController::class); 
-        Router::post('/login','App\Controllers\LoginController@login'); 
-        Router::get('/logout',LogoutController::class); 
-
         Router::group('/api',function () {
             Router::get('/productos',VerTodosProductosController::class); 
             Router::get('/producto',VerProductoController::class); 
-
-            Router::get('/test',PrincipalController::class); 
         },[]);
+        Router::post('/signin','App\Controllers\SigninController@signin'); 
+        Router::post('/login','App\Controllers\LoginController@login'); 
 
+        Router::get('/',SpaController::class); 
     }
 }   

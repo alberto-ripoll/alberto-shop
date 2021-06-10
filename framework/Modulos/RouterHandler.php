@@ -30,7 +30,7 @@ class RouterHandler extends Middleware{
                 return $this->next();
             }
             if (!$controller){
-                return $this->res->res(["status"=>404,"data"=>["Esta ruta no existe!"],"viewname"=>alRUTA.'app/Views/Error.php']);
+                return $this->res->res(["status"=>404,"data"=>["Esta ruta no existe!"],"viewname"=>'index.html']);
             }
         }
     }

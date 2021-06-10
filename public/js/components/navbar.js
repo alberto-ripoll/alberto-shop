@@ -7,7 +7,7 @@ nav_template.innerHTML = `
 
 <nav style="position: sticky;z-index: 1;width: 100%;" class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container px-4 px-lg-5">
-    <a class="navbar-brand" href="/">Alberto-Shop</a>
+    <button class="navbar-brand" href="/" data-link>Alberto-Shop</button>
     <slot name="carrito"></slot>        
                          <div id="cnt-finalizarCompra">
         <a href="/pay" class="btn btn-outline-green"><i class="bi bi-currency-bitcoin"></i>Finalizar compra</a>

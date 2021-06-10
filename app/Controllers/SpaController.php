@@ -8,7 +8,7 @@ use AlbertoCore\Modulos\Session;
 use Src\Utils\Application\EstaLoggeadoCommand;
 use Src\Utils\Application\VerTodosProductosCommand;
 
-class PrincipalController extends Controller{
+class SpaController extends Controller{
     public $estaLoggeadoCommand;
     public function __construct(Session $session, Response $response, EstaLoggeadoCommand $estaLoggeadoCommand, VerTodosProductosCommand $verTodosProductosCommand  ){
         $this->session = $session;
@@ -17,7 +17,7 @@ class PrincipalController extends Controller{
         $this->verTodosProductosCommand = $verTodosProductosCommand;
     }
     public function __invoke(){
-        $this->responde('Principal',[
+        $this->responde('index.html',[
         ]);
     }
 }

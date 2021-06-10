@@ -34,8 +34,7 @@ class Response
         header('location: '.$this->redirect);
         }
         if ($this->viewname!=''){
-            // $this->viewname = alRUTA.'/app/Views/'.$this->viewname.'.php';      
-            $this->viewname = './index.html';          
+            $this->viewname = './'.$this->viewname;          
 
             ($this->view)($this->viewname,$this->data);
         }else{
