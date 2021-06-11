@@ -36,19 +36,26 @@ class Router{
         }
         self::$rutas[$method][] = ['RUTA'=>$ruta,'CONTROLLER'=>$controller,'MIDDLEWARES'=>$middlewares];
     }
-	public static function getRouteParams($route){
-		$params = [];
-		$result = preg_match('/:([a-z]+)/', $route , $params);
-		if ($result){
-			$fields = array_splice($params,1);
-			$fileds = array_flip($fields);
-			$fields = array_fill_keys($fields, '');
-			return $fields;
-		}
-			 
-		
-		return false;
-	}
+    public static function getRouteParams($route){
+        $params = [];
+        $result = preg_match_all('/:([a-z]+)+/', $route , $params);
+        if ($result){
+            $params = $params[1];
+            $fields = array_splice($params,0);
+            $fileds = array_flip($fields);
+            $fields = array_fill_keys($fields, '');
+            return $fields;
+        }
+             
+        
+        return false;
+    }
+    public static function getRouteParamRule($route,$routeParams){
+        if ($routeParams)
+            $route = preg_replace('/:([a-z]+)/', '(?P<\1>[^/]+)', $route);
+        $route = str_replace('/', '\/', $route);
+        return $route;
+    }
     public static function get(string $ruta, string $controller,array $middlewares=[]){
         self::addRutas('GET',$ruta,$controller,$middlewares);
     }
@@ -98,27 +105,33 @@ class Router{
 
         // Para cada ruta que se disponga de un método HTTP en nuestros paquetes de rutas cargados
         for ($i=0; $i < $cantRutas; $i++) {
-
-            if($rutasMetodoHTTP[$i]['RUTA'] === $path){         // Si existe la ruta...
+            //Si la ruta tiene parámetros
+            $params = self::getRouteParams($rutasMetodoHTTP[$i]['RUTA'] );
+            $ruta = self::getRouteParamRule($rutasMetodoHTTP[$i]['RUTA'],$params);
+            if ( preg_match('/^' . $ruta .'$/', $path, $matches)){ // Si existe la ruta...
+                if ($params)
+                    $params = (array_intersect_key($matches,$params));
 
                 $rutaController = $rutasMetodoHTTP[$i]['CONTROLLER'];
                 $partesRutaController = explode('@',$rutaController);
                 $claseController = $partesRutaController[0];
                 $metodoController = $partesRutaController[1] ?? null;
-
+                
                 if (isset($metodoController)){
 
-                    if (isset($query)){                             // Ej: $query = 'prueba=2&usuario=german'
-
-                        parse_str($query, $parametros);             // https://www.php.net/manual/es/function.parse-str.php
+                    if (isset($params)){                             // Ej: $params = ':id=2'
 
                         //Devuelvo el controlador, con el metodo a ejecutar y con parametros
-                        return [Contenedor::build($claseController),$metodoController,$parametros,$rutasMetodoHTTP[$i]['MIDDLEWARES']];
+                        return [Contenedor::build($claseController),$metodoController,$params,$rutasMetodoHTTP[$i]['MIDDLEWARES']];
 
                     }
                      //Devuelvo el controlador, con el metodo a ejecutar pero sin parametros
                     return [Contenedor::build($claseController),$metodoController,[],$rutasMetodoHTTP[$i]['MIDDLEWARES']];
 
+                }
+                if (isset($params)){                             
+                    //Devuelvo el controlador sin parametros ni metodo a ejecutar
+                    return [Contenedor::build($claseController),'',$params,$rutasMetodoHTTP[$i]['MIDDLEWARES']];;
                 }
                 //Devuelvo el controlador sin parametros ni metodo a ejecutar
                 return [Contenedor::build($claseController),'',[],$rutasMetodoHTTP[$i]['MIDDLEWARES']];;

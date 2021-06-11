@@ -33,12 +33,12 @@ const router = async () => {
     })
 
     let ruta = matches.find(route => route.result !== null);
-    if (!ruta){
-        ruta = {
-            route : rutas[0],
-            isMatch:true
-        }
-    }
+    // if (!ruta){
+    //     ruta = {
+    //         route : rutas[0],
+    //         isMatch:true
+    //     }
+    // }
     
     const view = new ruta.route.view(getParams(ruta));
     document.querySelector('#app').innerHTML = await view.getHtml();

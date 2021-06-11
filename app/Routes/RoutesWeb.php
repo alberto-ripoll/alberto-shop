@@ -26,9 +26,10 @@ class RoutesWeb{
      * @return void
      */
     public static function defineRoutes(){
+        // Router::get('/producto/:id',VerProductoController::class); 
         Router::group('/api',function () {
             Router::get('/productos',VerTodosProductosController::class); 
-            Router::get('/producto',VerProductoController::class); 
+            Router::get('/productos/:id',VerProductoController::class); 
         },[]);
         Router::post('/signin','App\Controllers\SigninController@signin'); 
         Router::post('/login','App\Controllers\LoginController@login'); 
